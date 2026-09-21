@@ -10,7 +10,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
     primary = BrandYellow,
@@ -20,7 +19,7 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = PositiveGreen,
     // Solo es el color de respaldo: el fondo real es el degradado de StoreTheme
     background = BackgroundBottom,
-    onBackground = TextPrimary,
+    onBackground = TextPrimaryDark,
     surface = SurfaceDark,
     onSurface = TextPrimary,
     surfaceVariant = SurfaceVariantDark,
@@ -34,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
     onSecondary = LightTextPrimary,
     tertiary = BrandYellow,
     background = LightBackground,
-    onBackground = LightTextPrimary,
+    onBackground = TextPrimaryLight,
     surface = LightSurface,
     onSurface = LightTextPrimary,
     surfaceVariant = LightSurfaceVariant,

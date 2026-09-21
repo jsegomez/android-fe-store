@@ -29,6 +29,9 @@ private fun robotoStyle(
 
 // Uso: Text(text = "...", style = AppTextStyles.BodyLargeMedium)
 object AppTextStyles {
+    // Headline - 28sp
+    val HeadlineBold = robotoStyle(FontWeight.Bold, 28.sp, 36.sp)
+
     // Body XLarge - 18sp
     val BodyXLargeMedium = robotoStyle(FontWeight.Medium, 18.sp, 26.sp)
 

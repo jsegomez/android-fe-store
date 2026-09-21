@@ -29,3 +29,5 @@ val LightTextSecondary = Color(0xFFB0B0B0)
 // Texto
 val TextPrimary = Color(0xFFF5F5F5)
 val TextSecondary = Color(0xFF9E9E9E)
+val TextPrimaryLight = Color(0xFF1A1A1A)
+val TextPrimaryDark  = Color(0xFFF2F2F2)
