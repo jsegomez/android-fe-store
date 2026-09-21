@@ -1,0 +1,110 @@
+# ==============================================================
+# SECRETOS Y CREDENCIALES (nunca subir al repositorio)
+# ==============================================================
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+!.env.sample
+*.env
+
+# Keystores y certificados de firma
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.p8
+*.mobileprovision
+
+# Configuración de firma / claves de API
+keystore.properties
+signing.properties
+secrets.properties
+secrets.*.properties
+*.secret
+*.secrets
+secrets/
+credentials/
+credentials.json
+client_secret*.json
+service-account*.json
+*-service-account*.json
+
+# Firebase / Google Services (contienen API keys y IDs del proyecto)
+google-services.json
+GoogleService-Info.plist
+firebase-adminsdk*.json
+.firebaserc
+firebase-debug.log
+
+# Play Store / publicación
+play-publisher*.json
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Configuración local de la máquina (rutas del SDK, etc.)
+local.properties
+
+# ==============================================================
+# GRADLE / BUILD
+# ==============================================================
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/**/build/
+.kotlin/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.log
+captures/
+.externalNativeBuild/
+.cxx/
+output-metadata.json
+*.hprof
+
+# Mapping files de ofuscación (súbelos a Play Console, no al repo)
+# mapping.txt
+
+# ==============================================================
+# ANDROID STUDIO / INTELLIJ
+# ==============================================================
+*.iml
+*.ipr
+*.iws
+.idea/*
+!.idea/codeStyles/
+!.idea/runConfigurations/
+out/
+.navigation/
+lint/intermediates/
+lint/generated/
+lint/outputs/
+lint/tmp/
+
+# ==============================================================
+# SISTEMA OPERATIVO / EDITORES
+# ==============================================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.vscode/
+
+# ==============================================================
+# CLAUDE CODE (configuración local personal)
+# ==============================================================
+.claude/settings.local.json
