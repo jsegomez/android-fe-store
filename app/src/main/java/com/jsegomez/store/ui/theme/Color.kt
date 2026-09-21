@@ -26,8 +26,12 @@ val LightSurfaceVariant = Color(0xFFE8EAE9)
 val LightTextPrimary = BrandBlue
 val LightTextSecondary = Color(0xFFB0B0B0)
 
-// Texto
-val TextPrimary = Color(0xFFF5F5F5)
-val TextSecondary = Color(0xFF9E9E9E)
+// ====================== Texto ======================
 val TextPrimaryLight = Color(0xFF1A1A1A)
 val TextPrimaryDark  = Color(0xFFF2F2F2)
+val TextSecondaryLight = Color(0xFFA6A6A6)
+val TextSecondaryDark = Color(0xFFB0B0B0)
+// Cambiemos en nombre de esta variable para que lleve light en su nombre
+val PrimaryLight = Color(0xFF54408C)
+val PrimaryDark = Color(0xFF9B82E6)
+// variante: 0xFFB5A9D6 - 0xFF9B82E6

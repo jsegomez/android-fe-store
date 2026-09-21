@@ -12,22 +12,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 
 private val DarkColorScheme = darkColorScheme(
-    primary = BrandYellow,
+    primary = PrimaryDark,
     onPrimary = BrandBlue,
     secondary = SurfaceVariantDark,
-    onSecondary = TextPrimary,
+    onSecondary = PrimaryDark,
     tertiary = PositiveGreen,
     // Solo es el color de respaldo: el fondo real es el degradado de StoreTheme
     background = BackgroundBottom,
     onBackground = TextPrimaryDark,
     surface = SurfaceDark,
-    onSurface = TextPrimary,
+    onSurface = PrimaryDark,
     surfaceVariant = SurfaceVariantDark,
-    onSurfaceVariant = TextSecondary
+    onSurfaceVariant = TextSecondaryDark
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = BrandYellow,
+    primary = PrimaryLight,
     onPrimary = BrandBlue,
     secondary = LightSurfaceVariant,
     onSecondary = LightTextPrimary,
@@ -37,7 +37,7 @@ private val LightColorScheme = lightColorScheme(
     surface = LightSurface,
     onSurface = LightTextPrimary,
     surfaceVariant = LightSurfaceVariant,
-    onSurfaceVariant = LightTextSecondary
+    onSurfaceVariant = TextSecondaryLight
 )
 
 private val DarkBackgroundBrush = Brush.verticalGradient(
