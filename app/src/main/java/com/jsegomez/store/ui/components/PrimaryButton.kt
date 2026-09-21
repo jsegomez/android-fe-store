@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.jsegomez.store.ui.theme.AppTextStyles
 
 /**
  * Botón principal de la app. No define colores propios: los toma del tema
@@ -34,6 +35,6 @@ fun PrimaryButton(
             contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Text(text = text, style = MaterialTheme.typography.titleLarge)
+        Text(text = text, style = AppTextStyles.BodyLargeSemiBold)
     }
 }
