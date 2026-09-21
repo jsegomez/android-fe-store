@@ -24,7 +24,6 @@ val LightBackground = Color(0xFFF2F2F2)
 val LightSurface = Color(0xFFFFFFFF)
 val LightSurfaceVariant = Color(0xFFE8EAE9)
 val LightTextPrimary = BrandBlue
-val LightTextSecondary = Color(0xFFB0B0B0)
 
 // ====================== Texto ======================
 val TextPrimaryLight = Color(0xFF1A1A1A)
