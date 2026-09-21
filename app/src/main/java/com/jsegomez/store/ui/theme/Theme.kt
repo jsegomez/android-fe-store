@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Mint,
-    onPrimary = OnMint,
+    primary = BrandYellow,
+    onPrimary = BrandBlue,
     secondary = SurfaceVariantDark,
     onSecondary = TextPrimary,
     tertiary = PositiveGreen,
@@ -28,11 +28,11 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = LightPrimary,
-    onPrimary = Color.White,
+    primary = BrandYellow,
+    onPrimary = BrandBlue,
     secondary = LightSurfaceVariant,
     onSecondary = LightTextPrimary,
-    tertiary = LightPrimary,
+    tertiary = BrandYellow,
     background = LightBackground,
     onBackground = LightTextPrimary,
     surface = LightSurface,

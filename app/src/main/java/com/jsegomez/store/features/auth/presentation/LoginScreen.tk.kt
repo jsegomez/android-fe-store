@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.jsegomez.store.ui.components.PrimaryButton
 
 @Composable
 fun LoginScreen(modifier: Modifier = Modifier){
@@ -25,9 +26,16 @@ fun LoginScreen(modifier: Modifier = Modifier){
                 .width(300.dp)
                 .padding(vertical = 40.dp)
         ) {
-            Text(
-                text = "Login Screen"
-            )
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Login Screen")
+                PrimaryButton(
+                    text = "Login",
+                    onClick = { /* Handle login click */ }
+                )
+            }
         }
     }
 }
