@@ -13,30 +13,16 @@ import androidx.compose.ui.graphics.Brush
 
 private val DarkColorScheme = darkColorScheme(
     primary = PrimaryDark,
-    onPrimary = BrandBlue,
-    secondary = SurfaceVariantDark,
-    onSecondary = PrimaryDark,
-    tertiary = PositiveGreen,
-    // Solo es el color de respaldo: el fondo real es el degradado de StoreTheme
+    onPrimary = onPrimaryDark,
     background = BackgroundBottom,
     onBackground = TextPrimaryDark,
-    surface = SurfaceDark,
-    onSurface = PrimaryDark,
-    surfaceVariant = SurfaceVariantDark,
     onSurfaceVariant = TextSecondaryDark
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryLight,
-    onPrimary = BrandBlue,
-    secondary = LightSurfaceVariant,
-    onSecondary = LightTextPrimary,
-    tertiary = BrandYellow,
+    onPrimary = onPrimaryLight,
     background = LightBackground,
-    onBackground = TextPrimaryLight,
-    surface = LightSurface,
-    onSurface = LightTextPrimary,
-    surfaceVariant = LightSurfaceVariant,
     onSurfaceVariant = TextSecondaryLight
 )
 
