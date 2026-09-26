@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.jsegomez.store.ui.theme.AppTextStyles
@@ -32,6 +34,7 @@ fun AppTextField(
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    isPassword: Boolean = false,
     trailingIcon: @Composable (() -> Unit)? = null,
     placeholder: String? = null,
 ) {
@@ -57,8 +60,16 @@ fun AppTextField(
                 { Text(text = it, style = AppTextStyles.BodySmallRegular) }
             },
             trailingIcon = trailingIcon,
-            keyboardOptions = keyboardOptions,
-            visualTransformation = visualTransformation,
+            keyboardOptions = if (isPassword) {
+                keyboardOptions.copy(keyboardType = KeyboardType.Password)
+            } else {
+                keyboardOptions.copy(keyboardType = KeyboardType.Email)
+            },
+            visualTransformation = if (isPassword) {
+                PasswordVisualTransformation()
+            } else {
+                visualTransformation
+            },
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surface,

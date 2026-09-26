@@ -12,6 +12,7 @@ val onPrimaryDark = Color(0xFF2B1A54)
 val LightBackground = Color(0xFFFFFFFF)
 
 // ====================== Texto ======================
+val TextPrimaryLight = Color(0xFF121212)
 val TextPrimaryDark  = Color(0xFFF2F2F2)
 val TextSecondaryLight = Color(0xFFA6A6A6)
 val TextSecondaryDark = Color(0xFFB0B0B0)
