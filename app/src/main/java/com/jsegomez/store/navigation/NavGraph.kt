@@ -8,7 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jsegomez.store.features.auth.presentation.LoginScreen
 import com.jsegomez.store.features.home.HomeScreen
-import com.jsegomez.store.features.products.presentation.HomeProductsScreen
+import com.jsegomez.store.features.products.presentation.list.ProductListScreen
+import com.jsegomez.store.features.products.presentation.register.ProductRegisterScreen
 
 @Composable
 fun NavGraph(
@@ -31,7 +32,8 @@ fun NavGraph(
             )
         }
         composable<Route.Home> { HomeScreen() }
-        composable<Route.HomeProducts> { HomeProductsScreen() }
+        composable<Route.ProductList> { ProductListScreen() }
+        composable<Route.ProductRegister> { ProductRegisterScreen() }
     }
 }
 
