@@ -26,8 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     containerColor = Color.Transparent
                 ) { innerPadding ->
-//                    LoginScreen( modifier = Modifier.padding(innerPadding))
-                    HomeScreen()
+                    LoginScreen( modifier = Modifier.padding(innerPadding) )
                 }
             }
         }
