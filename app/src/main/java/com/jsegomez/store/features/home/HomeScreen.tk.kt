@@ -20,8 +20,9 @@ fun HomeScreen(modifier: Modifier = Modifier){
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Home Screen 2", style = AppTextStyles.BodyXLargeMedium)
+        Text(text = "Home Screen", style = AppTextStyles.BodyXLargeMedium)
         Spacer(modifier = Modifier.height(20.dp))
         Button(onClick = { }) { Text(text = "Registrar producto") }
+        Button(onClick = { }) { Text(text = "Ver todos los productos") }
     }
 }
