@@ -69,9 +69,20 @@ fun NavGraph(
                 }
             )
         }
-        composable<Route.ProductList> { ProductListScreen() }
+        composable<Route.ProductList> {
+            ProductListScreen(onBack = { navController.popBackStack() })
+        }
         composable<Route.ProductRegister> {
-            ProductRegisterScreen(onProductSaved = { navController.popBackStack() })
+            ProductRegisterScreen(
+                onProductSaved = {
+                    navController.navigate(Route.ProductList) {
+                        // Reemplaza el registro por la lista: "atrás" regresa a Home
+                        popUpTo(Route.ProductRegister) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }

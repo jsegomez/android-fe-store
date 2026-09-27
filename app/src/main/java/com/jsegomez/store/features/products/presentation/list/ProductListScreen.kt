@@ -16,29 +16,48 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.jsegomez.store.features.products.data.FakeProducts
 import com.jsegomez.store.features.products.domain.model.Product
+import com.jsegomez.store.ui.components.BackButton
 import com.jsegomez.store.ui.theme.AppTextStyles
 
 @Composable
 fun ProductListScreen(
     modifier: Modifier = Modifier,
-    products: List<Product> = FakeProducts.products
+    viewModel: ProductListViewModel = viewModel(),
+    onBack: () -> Unit = {}
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier.fillMaxSize()
-    ) {
-        items(items = products, key = { product -> product.id }) { product ->
-            ProductCard(product = product)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ProductListContent(products = uiState.products, onBack = onBack, modifier = modifier)
+}
+
+@Composable
+private fun ProductListContent(
+    products: List<Product>,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxSize()) {
+        BackButton(onClick = onBack, modifier = Modifier.padding(start = 4.dp, top = 8.dp))
+        LazyColumn(
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(items = products, key = { product -> product.id }) { product ->
+                ProductCard(product = product)
+            }
         }
     }
 }
@@ -93,5 +112,5 @@ private fun ProductCard(
 @Preview(showBackground = true)
 @Composable
 private fun ProductListScreenPreview() {
-    ProductListScreen()
+    ProductListContent(products = FakeProducts.products, onBack = {})
 }

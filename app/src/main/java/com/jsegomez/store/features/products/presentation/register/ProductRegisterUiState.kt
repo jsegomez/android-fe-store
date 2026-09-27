@@ -1,7 +1,8 @@
 package com.jsegomez.store.features.products.presentation.register
 
 private const val MIN_TEXT_LENGTH = 3
-private const val DEFAULT_IMAGE = "https://placehold.co/600x600?text=Sin+imagen"
+// Se pide en PNG porque placehold.co devuelve SVG por defecto y Coil no lo decodifica
+private const val DEFAULT_IMAGE = "https://placehold.co/600x600.png?text=Sin+imagen"
 
 data class ProductRegisterUiState(
     val title: String = "",

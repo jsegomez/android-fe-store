@@ -1,12 +1,16 @@
 package com.jsegomez.store.features.products.presentation.register
 
 import androidx.lifecycle.ViewModel
+import com.jsegomez.store.features.products.data.InMemoryProductRepository
+import com.jsegomez.store.features.products.domain.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ProductRegisterViewModel : ViewModel() {
+class ProductRegisterViewModel(
+    private val repository: ProductRepository = InMemoryProductRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ProductRegisterUiState())
     val uiState: StateFlow<ProductRegisterUiState> = _uiState.asStateFlow()
 
@@ -31,7 +35,17 @@ class ProductRegisterViewModel : ViewModel() {
     }
 
     fun onSaveClick(onSuccess: () -> Unit) {
-        if (!_uiState.value.isFormValid || _uiState.value.isLoading) return
+        val state = _uiState.value
+        if (!state.isFormValid || state.isLoading) return
+        repository.addProduct(
+            title = state.title.trim(),
+            price = state.price.toDouble(),
+            description = state.description.trim(),
+            category = state.category.trim(),
+            image = state.imageOrDefault
+        )
+        // Deshabilita el botón mientras se muestra el mensaje de éxito
+        _uiState.update { it.copy(isLoading = true) }
         onSuccess()
     }
 }
