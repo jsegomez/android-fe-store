@@ -63,7 +63,7 @@ fun AppTextField(
             keyboardOptions = if (isPassword) {
                 keyboardOptions.copy(keyboardType = KeyboardType.Password)
             } else {
-                keyboardOptions.copy(keyboardType = KeyboardType.Email)
+                keyboardOptions
             },
             visualTransformation = if (isPassword) {
                 PasswordVisualTransformation()

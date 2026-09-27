@@ -1,20 +1,28 @@
 package com.jsegomez.store.features.products.presentation.register
 
 data class ProductRegisterUiState(
-    val name: String = "",
+    val title: String = "",
     val price: String = "",
-    val stock: String = "",
+    val description: String = "",
+    val category: String = "",
+    val image: String = "",
     val isLoading: Boolean = false,
 ) {
-    val isNameValid: Boolean
-        get() = name.isNotBlank()
+    val isTitleValid: Boolean
+        get() = title.isNotBlank()
 
     val isPriceValid: Boolean
         get() = price.toDoubleOrNull()?.let { it > 0 } == true
 
-    val isStockValid: Boolean
-        get() = stock.toIntOrNull()?.let { it >= 0 } == true
+    val isDescriptionValid: Boolean
+        get() = description.isNotBlank()
+
+    val isCategoryValid: Boolean
+        get() = category.isNotBlank()
+
+    val isImageValid: Boolean
+        get() = image.startsWith("http://") || image.startsWith("https://")
 
     val isFormValid: Boolean
-        get() = isNameValid && isPriceValid && isStockValid
+        get() = isTitleValid && isPriceValid && isDescriptionValid && isCategoryValid && isImageValid
 }

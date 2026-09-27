@@ -10,16 +10,24 @@ class ProductRegisterViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ProductRegisterUiState())
     val uiState: StateFlow<ProductRegisterUiState> = _uiState.asStateFlow()
 
-    fun onNameChange(name: String) {
-        _uiState.update { it.copy(name = name) }
+    fun onTitleChange(title: String) {
+        _uiState.update { it.copy(title = title) }
     }
 
     fun onPriceChange(price: String) {
         _uiState.update { it.copy(price = price) }
     }
 
-    fun onStockChange(stock: String) {
-        _uiState.update { it.copy(stock = stock) }
+    fun onDescriptionChange(description: String) {
+        _uiState.update { it.copy(description = description) }
+    }
+
+    fun onCategoryChange(category: String) {
+        _uiState.update { it.copy(category = category) }
+    }
+
+    fun onImageChange(image: String) {
+        _uiState.update { it.copy(image = image) }
     }
 
     fun onSaveClick(onSuccess: () -> Unit) {

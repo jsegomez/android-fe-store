@@ -42,7 +42,9 @@ fun NavGraph(
             )
         }
         composable<Route.ProductList> { ProductListScreen() }
-        composable<Route.ProductRegister> { ProductRegisterScreen() }
+        composable<Route.ProductRegister> {
+            ProductRegisterScreen(onProductSaved = { navController.popBackStack() })
+        }
     }
 }
 
