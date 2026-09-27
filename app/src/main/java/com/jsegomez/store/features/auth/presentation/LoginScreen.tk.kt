@@ -1,6 +1,5 @@
 package com.jsegomez.store.features.auth.presentation
 
-import android.util.Patterns
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,16 +13,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jsegomez.store.ui.components.AppTextField
 import com.jsegomez.store.ui.components.PrimaryButton
 import com.jsegomez.store.ui.theme.AppTextStyles
@@ -31,12 +28,10 @@ import com.jsegomez.store.ui.theme.AppTextStyles
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = viewModel(),
     onLoginSuccess: () -> Unit
 ){
-    var uiState by remember { mutableStateOf(LoginUiState()) }
-    val isEmailValid by remember { derivedStateOf { Patterns.EMAIL_ADDRESS.matcher(uiState.user).matches() } }
-    val isPasswordValid by remember { derivedStateOf { uiState.password.length >= 6 } }
-    val isFormValid = isEmailValid && isPasswordValid
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
@@ -55,21 +50,21 @@ fun LoginScreen(
         )
         AppTextField(
             value = uiState.user,
-            onValueChange = { uiState = uiState.copy(user = it) },
+            onValueChange = viewModel::onUserChange,
             label = "Email",
             placeholder = "example@mail.com",
-            isError = uiState.user.isNotBlank() && !isEmailValid,
-            errorMessage = if (uiState.user.isNotBlank() && !isEmailValid) "Ingresa un correo válido" else null,
+            isError = uiState.user.isNotBlank() && !uiState.isEmailValid,
+            errorMessage = if (uiState.user.isNotBlank() && !uiState.isEmailValid) "Ingresa un correo válido" else null,
             modifier = Modifier.padding(top = 24.dp)
         )
         AppTextField(
             value = uiState.password,
-            onValueChange = { uiState = uiState.copy(password = it) },
+            onValueChange = viewModel::onPasswordChange,
             label = "Password",
             placeholder = "••••••••",
             isPassword = true,
-            isError = uiState.password.isNotEmpty() && !isPasswordValid,
-            errorMessage = if (uiState.password.isNotEmpty() && !isPasswordValid) {
+            isError = uiState.password.isNotEmpty() && !uiState.isPasswordValid,
+            errorMessage = if (uiState.password.isNotEmpty() && !uiState.isPasswordValid) {
                 "La contraseña debe tener al menos 6 caracteres"
             } else {
                 null
@@ -86,9 +81,9 @@ fun LoginScreen(
 
         PrimaryButton(
             text = "Iniciar sesión",
-            onClick = onLoginSuccess, // Temporal: cuando exista el ViewModel, se llamará tras validar el login
+            onClick = { viewModel.onLoginClick(onLoginSuccess) },
             modifier = Modifier.padding(top = 24.dp),
-            enabled = isFormValid
+            enabled = uiState.isFormValid && !uiState.isLoading
         )
 
         Spacer(modifier = Modifier.height(24.dp))
