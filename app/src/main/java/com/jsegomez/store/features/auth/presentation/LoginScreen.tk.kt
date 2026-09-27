@@ -29,7 +29,10 @@ import com.jsegomez.store.ui.components.PrimaryButton
 import com.jsegomez.store.ui.theme.AppTextStyles
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier){
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    onLoginSuccess: () -> Unit
+){
     var uiState by remember { mutableStateOf(LoginUiState()) }
     val isEmailValid by remember { derivedStateOf { Patterns.EMAIL_ADDRESS.matcher(uiState.user).matches() } }
     val isPasswordValid by remember { derivedStateOf { uiState.password.length >= 6 } }
@@ -83,7 +86,7 @@ fun LoginScreen(modifier: Modifier = Modifier){
 
         PrimaryButton(
             text = "Iniciar sesión",
-            onClick = {},
+            onClick = onLoginSuccess, // Temporal: cuando exista el ViewModel, se llamará tras validar el login
             modifier = Modifier.padding(top = 24.dp),
             enabled = isFormValid
         )
