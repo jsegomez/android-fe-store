@@ -2,6 +2,7 @@ package com.jsegomez.store.features.products.presentation.register
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,6 +31,7 @@ fun ProductRegisterScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .imePadding()
             .verticalScroll(rememberScrollState())
             .padding(top = 40.dp, end = 24.dp, start = 24.dp, bottom = 24.dp),
     ) {
