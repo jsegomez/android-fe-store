@@ -51,7 +51,7 @@ fun ProductRegisterScreen(
             placeholder = "Mens Cotton Jacket",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             isError = uiState.title.isNotEmpty() && !uiState.isTitleValid,
-            errorMessage = if (uiState.title.isNotEmpty() && !uiState.isTitleValid) "Ingresa un nombre" else null,
+            errorMessage = if (uiState.title.isNotEmpty() && !uiState.isTitleValid) "Mínimo 3 caracteres" else null,
             modifier = Modifier.padding(top = 24.dp)
         )
         AppTextField(
@@ -72,7 +72,7 @@ fun ProductRegisterScreen(
             singleLine = false,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             isError = uiState.description.isNotEmpty() && !uiState.isDescriptionValid,
-            errorMessage = if (uiState.description.isNotEmpty() && !uiState.isDescriptionValid) "Ingresa una descripción" else null,
+            errorMessage = if (uiState.description.isNotEmpty() && !uiState.isDescriptionValid) "Mínimo 3 caracteres" else null,
             modifier = Modifier.padding(top = 16.dp)
         )
         AppTextField(
@@ -82,13 +82,13 @@ fun ProductRegisterScreen(
             placeholder = "men's clothing",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             isError = uiState.category.isNotEmpty() && !uiState.isCategoryValid,
-            errorMessage = if (uiState.category.isNotEmpty() && !uiState.isCategoryValid) "Ingresa una categoría" else null,
+            errorMessage = if (uiState.category.isNotEmpty() && !uiState.isCategoryValid) "Mínimo 3 caracteres" else null,
             modifier = Modifier.padding(top = 16.dp)
         )
         AppTextField(
             value = uiState.image,
             onValueChange = viewModel::onImageChange,
-            label = "Imagen (URL)",
+            label = "Imagen (URL, opcional)",
             placeholder = "https://...",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
             isError = uiState.image.isNotEmpty() && !uiState.isImageValid,
