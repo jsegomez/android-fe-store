@@ -31,7 +31,16 @@ fun NavGraph(
                 }
             )
         }
-        composable<Route.Home> { HomeScreen() }
+        composable<Route.Home> {
+            HomeScreen(
+                onNavigateToProductRegister = {
+                    navController.navigate(Route.ProductRegister) { launchSingleTop = true }
+                },
+                onNavigateToProductList = {
+                    navController.navigate(Route.ProductList) { launchSingleTop = true }
+                }
+            )
+        }
         composable<Route.ProductList> { ProductListScreen() }
         composable<Route.ProductRegister> { ProductRegisterScreen() }
     }
