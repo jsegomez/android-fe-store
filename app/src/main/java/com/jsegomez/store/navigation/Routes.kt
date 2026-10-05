@@ -2,10 +2,7 @@ package com.jsegomez.store.navigation
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-sealed interface Route {
-    @Serializable data object Login : Route
-    @Serializable data object Home : Route
-    @Serializable data object ProductList : Route
-    @Serializable data object ProductRegister : Route
-}
+// Subgrafos de la app: identifican un grupo de pantallas, no son pantallas.
+// Las rutas de cada pantalla viven en su feature (features/<x>/navigation/).
+@Serializable data object Auth
+@Serializable data object Main

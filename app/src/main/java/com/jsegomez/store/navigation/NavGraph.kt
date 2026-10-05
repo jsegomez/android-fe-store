@@ -10,9 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.jsegomez.store.features.auth.presentation.LoginScreen
+import com.jsegomez.store.features.auth.navigation.authGraph
+import com.jsegomez.store.features.home.navigation.Home
 import com.jsegomez.store.features.home.HomeScreen
+import com.jsegomez.store.features.products.navigation.ProductList
+import com.jsegomez.store.features.products.navigation.ProductRegister
 import com.jsegomez.store.features.products.presentation.list.ProductListScreen
 import com.jsegomez.store.features.products.presentation.register.ProductRegisterScreen
 
@@ -25,7 +29,7 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.Login,
+        startDestination = Auth,
         modifier = modifier,
         // Deslizamiento horizontal: al avanzar entra por la derecha,
         // al regresar la pantalla actual sale hacia la derecha
@@ -49,42 +53,40 @@ fun NavGraph(
             slideOutHorizontally(tween(NAV_ANIM_MS)) { it } + fadeOut(tween(NAV_ANIM_MS))
         }
     ) {
-        composable<Route.Login> {
-            LoginScreen(
-                onLoginSuccess = {
-                    navController.navigate(Route.Home) {
-                        // Saca Login del back stack para que "atrás" no regrese al login
-                        popUpTo(Route.Login) { inclusive = true }
-                    }
+        authGraph(
+            onLoginSuccess = {
+                navController.navigate(Main) {
+                    // Saca todo el subgrafo Auth del back stack para que "atrás" no regrese al login
+                    popUpTo(Auth) { inclusive = true }
                 }
-            )
-        }
-        composable<Route.Home> {
-            HomeScreen(
-                onNavigateToProductRegister = {
-                    navController.navigate(Route.ProductRegister) { launchSingleTop = true }
-                },
-                onNavigateToProductList = {
-                    navController.navigate(Route.ProductList) { launchSingleTop = true }
-                }
-            )
-        }
-        composable<Route.ProductList> {
-            ProductListScreen(onBack = { navController.popBackStack() })
-        }
-        composable<Route.ProductRegister> {
-            ProductRegisterScreen(
-                onProductSaved = {
-                    navController.navigate(Route.ProductList) {
-                        // Reemplaza el registro por la lista: "atrás" regresa a Home
-                        popUpTo(Route.ProductRegister) { inclusive = true }
-                        launchSingleTop = true
+            }
+        )
+        navigation<Main>(startDestination = Home) {
+            composable<Home> {
+                HomeScreen(
+                    onNavigateToProductRegister = {
+                        navController.navigate(ProductRegister) { launchSingleTop = true }
+                    },
+                    onNavigateToProductList = {
+                        navController.navigate(ProductList) { launchSingleTop = true }
                     }
-                },
-                onBack = { navController.popBackStack() }
-            )
+                )
+            }
+            composable<ProductList> {
+                ProductListScreen(onBack = { navController.popBackStack() })
+            }
+            composable<ProductRegister> {
+                ProductRegisterScreen(
+                    onProductSaved = {
+                        navController.navigate(ProductList) {
+                            // Reemplaza el registro por la lista: "atrás" regresa a Home
+                            popUpTo(ProductRegister) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    onBack = { navController.popBackStack() }
+                )
+            }
         }
     }
 }
-
-

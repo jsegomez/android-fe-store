@@ -1,4 +1,4 @@
-package com.jsegomez.store.features.auth.presentation
+package com.jsegomez.store.features.auth.presentation.login
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
