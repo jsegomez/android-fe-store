@@ -29,5 +29,6 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(20.dp))
         Button(onClick = onNavigateToProductRegister, modifier = Modifier.width(210.dp)) { Text(text = "Registrar producto") }
         Button(onClick = onNavigateToProductList, modifier = Modifier.width(210.dp)) { Text(text = "Ver todos los productos") }
+        Button(onClick = { /* TODO: Implement action */ }, modifier = Modifier.width(210.dp)) { Text(text = "Pokedex") }
     }
 }
