@@ -1,5 +1,6 @@
 package com.jsegomez.store.di
 
+import com.jsegomez.store.features.pokedex.data.remote.PokeApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -25,4 +26,6 @@ object NetworkModule {
         .client(okHttpClient)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
+
+    val pokeApi: PokeApi = retrofit.create(PokeApi::class.java)
 }
