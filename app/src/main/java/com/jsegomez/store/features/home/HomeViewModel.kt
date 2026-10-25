@@ -1,4 +1,7 @@
 package com.jsegomez.store.features.home
 
-class HomeViewModel {
+import androidx.lifecycle.ViewModel
+
+class HomeViewModel: ViewModel() {
+
 }

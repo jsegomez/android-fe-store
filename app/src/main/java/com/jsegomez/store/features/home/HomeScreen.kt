@@ -18,8 +18,9 @@ import com.jsegomez.store.ui.theme.AppTextStyles
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onNavigateToProductRegister: () -> Unit,
-    onNavigateToProductList: () -> Unit
+    onNavigateToProductList: () -> Unit,
 ){
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
