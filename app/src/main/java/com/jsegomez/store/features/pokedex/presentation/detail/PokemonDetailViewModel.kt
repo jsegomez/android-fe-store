@@ -13,6 +13,6 @@ class PokemonDetailViewModel(
 ) : ViewModel() {
     private val pokemonId: Int = savedStateHandle.toRoute<PokemonDetailRoute>().id
 
-    private val _uiState = MutableStateFlow(PokemonDetailsUiState(pokemonId = pokemonId))
-    val uiState: StateFlow<PokemonDetailsUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(PokemonDetailUiState(pokemonId = pokemonId))
+    val uiState: StateFlow<PokemonDetailUiState> = _uiState.asStateFlow()
 }

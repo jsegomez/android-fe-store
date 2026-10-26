@@ -1,6 +1,5 @@
 package com.jsegomez.store.features.pokedex.presentation.pokedex
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -76,7 +75,7 @@ private fun PokedexContent(
 }
 
 @Composable
-private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modifier, onPokemonClick: (Int) -> Unit) {
+private fun PokemonGrid(pokemon: List<PokemonSummary>, onPokemonClick: (Int) -> Unit, modifier: Modifier = Modifier) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
@@ -89,11 +88,11 @@ private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modi
 }
 
 @Composable
-private fun PokemonCard(pokemon: PokemonSummary, modifier: Modifier = Modifier, onPokemonClick: (Int) -> Unit) {
+private fun PokemonCard(pokemon: PokemonSummary, onPokemonClick: (Int) -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .clickable { onPokemonClick(pokemon.id) }
+            .fillMaxWidth(),
+        onClick = { onPokemonClick(pokemon.id) }
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
