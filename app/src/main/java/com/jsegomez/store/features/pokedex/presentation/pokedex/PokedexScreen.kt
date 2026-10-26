@@ -43,7 +43,7 @@ fun PokedexScreen(
     modifier: Modifier = Modifier,
     viewModel: PokedexViewModel = viewModel(),
     onBack: () -> Unit,
-    onNavigateToPokemonDetail: () -> Unit,
+    onPokemonClick: (Int) -> Unit,
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -51,7 +51,7 @@ fun PokedexScreen(
         uiState = uiState,
         onRetry = viewModel::loadPokemon,
         onBack = onBack,
-        onNavigateToPokemonDetail = onNavigateToPokemonDetail,
+        onPokemonClick = onPokemonClick,
         modifier = modifier,
     )
 }
@@ -61,14 +61,14 @@ private fun PokedexContent(
     uiState: PokedexUiState,
     onRetry: () -> Unit,
     onBack: () -> Unit,
-    onNavigateToPokemonDetail: () -> Unit,
+    onPokemonClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         BackButton(onClick = onBack, modifier = Modifier.padding(start = 4.dp, top = 8.dp))
 
         when {
-            uiState.pokemon.isNotEmpty() -> PokemonGrid(pokemon = uiState.pokemon, onNavigateToPokemonDetail = onNavigateToPokemonDetail)
+            uiState.pokemon.isNotEmpty() -> PokemonGrid(pokemon = uiState.pokemon, onPokemonClick = onPokemonClick)
             uiState.isLoading -> LoadingState()
             uiState.error != null -> ErrorState(error = uiState.error, onRetry = onRetry)
         }
@@ -76,7 +76,7 @@ private fun PokedexContent(
 }
 
 @Composable
-private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modifier, onNavigateToPokemonDetail: () -> Unit) {
+private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modifier, onPokemonClick: (Int) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
@@ -84,16 +84,16 @@ private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modi
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier.fillMaxSize(),
     ) {
-        items(items = pokemon, key = { it.id }) { PokemonCard(pokemon = it, onNavigateToPokemonDetail = onNavigateToPokemonDetail) }
+        items(items = pokemon, key = { it.id }) { PokemonCard(pokemon = it, onPokemonClick = onPokemonClick) }
     }
 }
 
 @Composable
-private fun PokemonCard(pokemon: PokemonSummary, modifier: Modifier = Modifier, onNavigateToPokemonDetail: () -> Unit) {
+private fun PokemonCard(pokemon: PokemonSummary, modifier: Modifier = Modifier, onPokemonClick: (Int) -> Unit) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(onClick = onNavigateToPokemonDetail)
+            .clickable { onPokemonClick(pokemon.id) }
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),

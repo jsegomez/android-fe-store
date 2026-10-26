@@ -9,10 +9,10 @@ import com.jsegomez.store.navigation.Pokedex
 
 fun NavGraphBuilder.pokedexGraph(
     onBack: () -> Unit,
-    onNavigateToPokemonDetail: () -> Unit
+    onPokemonClick: (Int) -> Unit
 ) {
     navigation<Pokedex>(startDestination = PokedexRoute) {
-        composable<PokedexRoute> { PokedexScreen(onBack = onBack, onNavigateToPokemonDetail = onNavigateToPokemonDetail) }
+        composable<PokedexRoute> { PokedexScreen(onBack = onBack, onPokemonClick = onPokemonClick) }
         composable<PokemonDetailRoute> { PokemonDetailScreen(onBack = onBack) }
     }
 }
