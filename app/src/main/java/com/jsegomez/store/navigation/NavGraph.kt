@@ -82,9 +82,9 @@ fun NavGraph(
                 },
                 onBack = { navController.popBackStack() }
             )
+            pokedexGraph(
+                onBack = { navController.popBackStack() }
+            )
         }
-        pokedexGraph(
-            onBack = { navController.popBackStack() }
-        )
     }
 }
