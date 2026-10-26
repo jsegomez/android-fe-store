@@ -86,27 +86,32 @@ private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modi
 @Composable
 private fun PokemonCard(pokemon: PokemonSummary, modifier: Modifier = Modifier) {
     Card(modifier = modifier.fillMaxWidth()) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(12.dp),
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            AsyncImage(
-                model = pokemon.imageUrl,
-                contentDescription = pokemon.name,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.size(110.dp),
-            )
-            Text(
-                text = "#${pokemon.id.toString().padStart(3, '0')}",
-                style = AppTextStyles.BodySmallMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Text(
-                text = pokemon.name.replaceFirstChar { it.uppercase() },
-                style = AppTextStyles.BodyLargeSemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(12.dp)
+            ) {
+                AsyncImage(
+                    model = pokemon.imageUrl,
+                    contentDescription = pokemon.name,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(110.dp),
+                )
+                Text(
+                    text = "#${pokemon.id.toString().padStart(3, '0')}",
+                    style = AppTextStyles.BodySmallMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    text = pokemon.name.replaceFirstChar { it.uppercase() },
+                    style = AppTextStyles.BodyLargeSemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         }
     }
 }

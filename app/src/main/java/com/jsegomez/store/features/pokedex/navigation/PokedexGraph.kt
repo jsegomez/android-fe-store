@@ -6,8 +6,10 @@ import androidx.navigation.compose.navigation
 import com.jsegomez.store.features.pokedex.presentation.pokedex.PokedexScreen
 import com.jsegomez.store.navigation.Pokedex
 
-fun NavGraphBuilder.pokedexGraph() {
+fun NavGraphBuilder.pokedexGraph(
+    onBack: () -> Unit
+) {
     navigation<Pokedex>(startDestination = PokedexRoute) {
-        composable<PokedexRoute> { PokedexScreen() }
+        composable<PokedexRoute> { PokedexScreen(onBack = onBack) }
     }
 }
