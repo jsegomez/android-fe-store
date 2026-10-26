@@ -12,12 +12,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.jsegomez.store.features.auth.navigation.authGraph
+import com.jsegomez.store.features.auth.navigation.navigateToMainAfterLogin
 import com.jsegomez.store.features.home.navigation.Home
 import com.jsegomez.store.features.home.navigation.homeGraph
+import com.jsegomez.store.features.pokedex.navigation.navigateToPokedex
 import com.jsegomez.store.features.pokedex.navigation.navigateToPokemonDetail
 import com.jsegomez.store.features.pokedex.navigation.pokedexGraph
-import com.jsegomez.store.features.products.navigation.ProductList
-import com.jsegomez.store.features.products.navigation.ProductRegister
+import com.jsegomez.store.features.products.navigation.navigateToProductList
+import com.jsegomez.store.features.products.navigation.navigateToProductListAfterSave
+import com.jsegomez.store.features.products.navigation.navigateToProductRegister
 import com.jsegomez.store.features.products.navigation.productsGraph
 
 private const val NAV_ANIM_MS = 300
@@ -53,34 +56,15 @@ fun NavGraph(
             slideOutHorizontally(tween(NAV_ANIM_MS)) { it } + fadeOut(tween(NAV_ANIM_MS))
         }
     ) {
-        authGraph(
-            onLoginSuccess = {
-                navController.navigate(Main) {
-                    // Saca todo el subgrafo Auth del back stack para que "atrás" no regrese al login
-                    popUpTo(Auth) { inclusive = true }
-                }
-            }
-        )
+        authGraph(onLoginSuccess = navController::navigateToMainAfterLogin)
         navigation<Main>(startDestination = Home) {
             homeGraph(
-                onNavigateToProductRegister = {
-                    navController.navigate(ProductRegister) { launchSingleTop = true }
-                },
-                onNavigateToProductList = {
-                    navController.navigate(ProductList) { launchSingleTop = true }
-                },
-                onNavigateToPokedex = {
-                    navController.navigate(Pokedex) { launchSingleTop = true }
-                }
+                onNavigateToProductRegister = navController::navigateToProductRegister,
+                onNavigateToProductList = navController::navigateToProductList,
+                onNavigateToPokedex = navController::navigateToPokedex
             )
             productsGraph(
-                onProductSaved = {
-                        navController.navigate(ProductList) {
-                            // Reemplaza el registro por la lista: "atrás" regresa a Home
-                            popUpTo(ProductRegister) { inclusive = true }
-                            launchSingleTop = true
-                        }
-                },
+                onProductSaved = navController::navigateToProductListAfterSave,
                 onBack = { navController.popBackStack() }
             )
             pokedexGraph(
