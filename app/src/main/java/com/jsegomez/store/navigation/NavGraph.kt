@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.jsegomez.store.features.auth.navigation.authGraph
 import com.jsegomez.store.features.home.navigation.Home
 import com.jsegomez.store.features.home.HomeScreen
+import com.jsegomez.store.features.pokedex.navigation.pokedexGraph
 import com.jsegomez.store.features.products.navigation.ProductList
 import com.jsegomez.store.features.products.navigation.ProductRegister
 import com.jsegomez.store.features.products.presentation.list.ProductListScreen
@@ -69,6 +70,9 @@ fun NavGraph(
                     },
                     onNavigateToProductList = {
                         navController.navigate(ProductList) { launchSingleTop = true }
+                    },
+                    onNavigateToPokedex = {
+                        navController.navigate(Pokedex) { launchSingleTop = true }
                     }
                 )
             }
@@ -88,5 +92,6 @@ fun NavGraph(
                 )
             }
         }
+        pokedexGraph()
     }
 }

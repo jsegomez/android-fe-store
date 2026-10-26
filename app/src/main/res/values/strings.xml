@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Store</string>
+    <string name="pokedex_title">Pokédex</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="error_no_connection">Sin conexión. Revisa tu internet.</string>
+    <string name="error_timeout">La solicitud tardó demasiado.</string>
+    <string name="error_server">Error del servidor (%1$d).</string>
+    <string name="error_generic">Algo salió mal. Inténtalo de nuevo.</string>
 </resources>
