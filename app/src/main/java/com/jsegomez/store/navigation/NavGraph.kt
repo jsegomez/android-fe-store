@@ -14,7 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.jsegomez.store.features.auth.navigation.authGraph
 import com.jsegomez.store.features.home.navigation.Home
 import com.jsegomez.store.features.home.navigation.homeGraph
-import com.jsegomez.store.features.pokedex.navigation.PokemonDetailRoute
+import com.jsegomez.store.features.pokedex.navigation.navigateToPokemonDetail
 import com.jsegomez.store.features.pokedex.navigation.pokedexGraph
 import com.jsegomez.store.features.products.navigation.ProductList
 import com.jsegomez.store.features.products.navigation.ProductRegister
@@ -85,7 +85,7 @@ fun NavGraph(
             )
             pokedexGraph(
                 onBack = { navController.popBackStack() },
-                onPokemonClick = { id -> navController.navigate(PokemonDetailRoute(id)) }
+                onPokemonClick = navController::navigateToPokemonDetail
             )
         }
     }
