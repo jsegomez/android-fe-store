@@ -6,21 +6,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jsegomez.store.ui.components.BackButton
 
 @Composable
 fun PokemonDetailScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    viewModel: PokemonDetailViewModel = viewModel(),
 ){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BackButton(onClick = onBack, modifier = Modifier.padding(start = 4.dp, top = 8.dp))
-        Text(text = "Pokemon Detail Screen")
+        Text(text = "Pokemon Detail Screen, con el Pokemon ID: ${uiState.pokemonId}")
     }
 }

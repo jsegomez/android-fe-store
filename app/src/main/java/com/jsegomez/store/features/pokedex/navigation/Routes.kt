@@ -4,4 +4,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable data object PokedexRoute
 
-@Serializable data object PokemonDetailRoute
+@Serializable data class PokemonDetailRoute(val id: Int)

@@ -85,7 +85,7 @@ fun NavGraph(
             )
             pokedexGraph(
                 onBack = { navController.popBackStack() },
-                onPokemonClick = { navController.navigate(PokemonDetailRoute) },
+                onPokemonClick = { id -> navController.navigate(PokemonDetailRoute(id)) }
             )
         }
     }
