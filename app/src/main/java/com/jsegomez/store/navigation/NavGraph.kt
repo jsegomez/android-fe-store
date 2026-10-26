@@ -9,17 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.jsegomez.store.features.auth.navigation.authGraph
 import com.jsegomez.store.features.home.navigation.Home
-import com.jsegomez.store.features.home.HomeScreen
+import com.jsegomez.store.features.home.navigation.homeGraph
 import com.jsegomez.store.features.pokedex.navigation.pokedexGraph
 import com.jsegomez.store.features.products.navigation.ProductList
 import com.jsegomez.store.features.products.navigation.ProductRegister
-import com.jsegomez.store.features.products.presentation.list.ProductListScreen
-import com.jsegomez.store.features.products.presentation.register.ProductRegisterScreen
+import com.jsegomez.store.features.products.navigation.productsGraph
 
 private const val NAV_ANIM_MS = 300
 
@@ -63,34 +61,27 @@ fun NavGraph(
             }
         )
         navigation<Main>(startDestination = Home) {
-            composable<Home> {
-                HomeScreen(
-                    onNavigateToProductRegister = {
-                        navController.navigate(ProductRegister) { launchSingleTop = true }
-                    },
-                    onNavigateToProductList = {
-                        navController.navigate(ProductList) { launchSingleTop = true }
-                    },
-                    onNavigateToPokedex = {
-                        navController.navigate(Pokedex) { launchSingleTop = true }
-                    }
-                )
-            }
-            composable<ProductList> {
-                ProductListScreen(onBack = { navController.popBackStack() })
-            }
-            composable<ProductRegister> {
-                ProductRegisterScreen(
-                    onProductSaved = {
+            homeGraph(
+                onNavigateToProductRegister = {
+                    navController.navigate(ProductRegister) { launchSingleTop = true }
+                },
+                onNavigateToProductList = {
+                    navController.navigate(ProductList) { launchSingleTop = true }
+                },
+                onNavigateToPokedex = {
+                    navController.navigate(Pokedex) { launchSingleTop = true }
+                }
+            )
+            productsGraph(
+                onProductSaved = {
                         navController.navigate(ProductList) {
                             // Reemplaza el registro por la lista: "atrás" regresa a Home
                             popUpTo(ProductRegister) { inclusive = true }
                             launchSingleTop = true
                         }
-                    },
-                    onBack = { navController.popBackStack() }
-                )
-            }
+                },
+                onBack = { navController.popBackStack() }
+            )
         }
         pokedexGraph()
     }
