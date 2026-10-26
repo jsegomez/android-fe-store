@@ -1,5 +1,6 @@
 package com.jsegomez.store.features.pokedex.presentation.pokedex
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,13 +42,16 @@ import com.jsegomez.store.ui.theme.AppTextStyles
 fun PokedexScreen(
     modifier: Modifier = Modifier,
     viewModel: PokedexViewModel = viewModel(),
-    onBack: () -> Unit = {}
+    onBack: () -> Unit,
+    onNavigateToPokemonDetail: () -> Unit,
 ){
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle();
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     PokedexContent(
         uiState = uiState,
         onRetry = viewModel::loadPokemon,
         onBack = onBack,
+        onNavigateToPokemonDetail = onNavigateToPokemonDetail,
         modifier = modifier,
     )
 }
@@ -57,13 +61,14 @@ private fun PokedexContent(
     uiState: PokedexUiState,
     onRetry: () -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier,
+    onNavigateToPokemonDetail: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         BackButton(onClick = onBack, modifier = Modifier.padding(start = 4.dp, top = 8.dp))
 
         when {
-            uiState.pokemon.isNotEmpty() -> PokemonGrid(pokemon = uiState.pokemon)
+            uiState.pokemon.isNotEmpty() -> PokemonGrid(pokemon = uiState.pokemon, onNavigateToPokemonDetail = onNavigateToPokemonDetail)
             uiState.isLoading -> LoadingState()
             uiState.error != null -> ErrorState(error = uiState.error, onRetry = onRetry)
         }
@@ -71,7 +76,7 @@ private fun PokedexContent(
 }
 
 @Composable
-private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modifier) {
+private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modifier, onNavigateToPokemonDetail: () -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
@@ -79,13 +84,17 @@ private fun PokemonGrid(pokemon: List<PokemonSummary>, modifier: Modifier = Modi
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier.fillMaxSize(),
     ) {
-        items(items = pokemon, key = { it.id }) { PokemonCard(pokemon = it) }
+        items(items = pokemon, key = { it.id }) { PokemonCard(pokemon = it, onNavigateToPokemonDetail = onNavigateToPokemonDetail) }
     }
 }
 
 @Composable
-private fun PokemonCard(pokemon: PokemonSummary, modifier: Modifier = Modifier) {
-    Card(modifier = modifier.fillMaxWidth()) {
+private fun PokemonCard(pokemon: PokemonSummary, modifier: Modifier = Modifier, onNavigateToPokemonDetail: () -> Unit) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onNavigateToPokemonDetail)
+    ) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
