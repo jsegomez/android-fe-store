@@ -24,17 +24,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.jsegomez.store.features.products.data.FakeProducts
 import com.jsegomez.store.features.products.domain.model.Product
 import com.jsegomez.store.ui.components.BackButton
 import com.jsegomez.store.ui.theme.AppTextStyles
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProductListScreen(
     modifier: Modifier = Modifier,
-    viewModel: ProductListViewModel = viewModel(),
+    viewModel: ProductListViewModel = koinViewModel(),
     onBack: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

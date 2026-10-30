@@ -3,7 +3,6 @@ package com.jsegomez.store.features.pokedex.presentation.pokedex
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jsegomez.store.core.network.AppError
-import com.jsegomez.store.features.pokedex.data.PokedexRepositoryImpl
 import com.jsegomez.store.features.pokedex.domain.PokedexRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PokedexViewModel(
-    private val repository: PokedexRepository = PokedexRepositoryImpl(),
+    private val repository: PokedexRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PokedexUiState())

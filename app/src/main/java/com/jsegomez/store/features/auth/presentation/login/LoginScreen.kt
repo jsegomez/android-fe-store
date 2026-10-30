@@ -22,15 +22,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jsegomez.store.ui.components.AppTextField
 import com.jsegomez.store.ui.components.PrimaryButton
 import com.jsegomez.store.ui.theme.AppTextStyles
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel = koinViewModel(),
     onLoginSuccess: () -> Unit
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

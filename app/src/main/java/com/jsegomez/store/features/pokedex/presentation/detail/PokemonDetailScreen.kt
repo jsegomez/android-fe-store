@@ -22,20 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import coil3.compose.AsyncImage
 import com.jsegomez.store.R
 import com.jsegomez.store.core.ui.ErrorState
 import com.jsegomez.store.core.ui.LoadingState
-import com.jsegomez.store.features.pokedex.data.PokedexRepositoryImpl
 import com.jsegomez.store.features.pokedex.domain.model.PokemonDetail
 import com.jsegomez.store.features.pokedex.domain.model.PokemonStat
 import com.jsegomez.store.ui.components.BackButton
 import com.jsegomez.store.ui.theme.AppTextStyles
+import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
 private const val MAX_BASE_STAT = 255f
@@ -44,11 +40,7 @@ private const val MAX_BASE_STAT = 255f
 fun PokemonDetailScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PokemonDetailViewModel = viewModel(
-        factory = viewModelFactory {
-            initializer { PokemonDetailViewModel(createSavedStateHandle(), PokedexRepositoryImpl()) }
-        }
-    ),
+    viewModel: PokemonDetailViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

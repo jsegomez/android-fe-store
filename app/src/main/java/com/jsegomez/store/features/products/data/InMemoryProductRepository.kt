@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 // Los productos viven solo en memoria: se pierden al cerrar la app
-object InMemoryProductRepository : ProductRepository {
+class InMemoryProductRepository : ProductRepository {
     private val _products = MutableStateFlow(FakeProducts.products)
     override val products: StateFlow<List<Product>> = _products.asStateFlow()
 

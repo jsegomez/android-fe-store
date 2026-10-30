@@ -6,36 +6,45 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
-object NetworkModule {
-    private const val POKE_BASE_URL = "https://pokeapi.co/api/v2/"
+private const val POKE_BASE_URL = "https://pokeapi.co/api/v2/"
 
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
-
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-        redactHeader("Authorization")
-    }
-
-    private val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(15, TimeUnit.SECONDS)
-        .writeTimeout(15, TimeUnit.SECONDS)
-        .apply {
-            if (BuildConfig.DEBUG) addInterceptor(loggingInterceptor)
+val networkModule = module {
+    single {
+        Json {
+            ignoreUnknownKeys = true
         }
-        .build()
+    }
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(POKE_BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-        .build()
+    single {
+        OkHttpClient.Builder()
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(
+                        HttpLoggingInterceptor().apply {
+                            level = HttpLoggingInterceptor.Level.BODY
+                            redactHeader("Authorization")
+                        }
+                    )
+                }
+            }
+            .build()
+    }
 
-    val pokeApi: PokeApi = retrofit.create(PokeApi::class.java)
+    single {
+        Retrofit.Builder()
+            .baseUrl(POKE_BASE_URL)
+            .client(get())
+            .addConverterFactory(get<Json>().asConverterFactory("application/json".toMediaType()))
+            .build()
+    }
+
+    single { get<Retrofit>().create(PokeApi::class.java) }
 }

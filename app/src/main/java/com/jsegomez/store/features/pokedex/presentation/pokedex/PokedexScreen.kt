@@ -22,18 +22,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.jsegomez.store.core.ui.ErrorState
 import com.jsegomez.store.core.ui.LoadingState
 import com.jsegomez.store.features.pokedex.domain.model.PokemonSummary
 import com.jsegomez.store.ui.components.BackButton
 import com.jsegomez.store.ui.theme.AppTextStyles
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PokedexScreen(
     modifier: Modifier = Modifier,
-    viewModel: PokedexViewModel = viewModel(),
+    viewModel: PokedexViewModel = koinViewModel(),
     onBack: () -> Unit,
     onPokemonClick: (Int) -> Unit,
 ){

@@ -22,13 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jsegomez.store.ui.components.AppTextField
 import com.jsegomez.store.ui.components.BackButton
 import com.jsegomez.store.ui.components.PrimaryButton
 import com.jsegomez.store.ui.theme.AppTextStyles
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 // Tiempo que se muestra el mensaje de éxito antes de pasar a la lista
 private const val SUCCESS_MESSAGE_MS = 1200L
@@ -36,7 +36,7 @@ private const val SUCCESS_MESSAGE_MS = 1200L
 @Composable
 fun ProductRegisterScreen(
     modifier: Modifier = Modifier,
-    viewModel: ProductRegisterViewModel = viewModel(),
+    viewModel: ProductRegisterViewModel = koinViewModel(),
     onProductSaved: () -> Unit,
     onBack: () -> Unit
 ) {
