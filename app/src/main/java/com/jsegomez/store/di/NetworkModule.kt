@@ -6,14 +6,19 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
-private const val POKE_BASE_URL = "https://pokeapi.co/api/v2/"
+// Un String suelto es ambiguo en Koin: el qualifier deja claro que esta URL es la de PokéAPI
+// y evita choques cuando otra API (por ejemplo la de auth) registre su propia URL base
+private val pokeBaseUrl = named("pokeBaseUrl")
 
 val networkModule = module {
+    single(pokeBaseUrl) { "https://pokeapi.co/api/v2/" }
+
     single {
         Json {
             ignoreUnknownKeys = true
@@ -40,7 +45,7 @@ val networkModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl(POKE_BASE_URL)
+            .baseUrl(get<String>(pokeBaseUrl))
             .client(get())
             .addConverterFactory(get<Json>().asConverterFactory("application/json".toMediaType()))
             .build()

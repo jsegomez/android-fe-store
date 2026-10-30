@@ -9,6 +9,8 @@
     <string name="pokemon_abilities">Habilidades</string>
     <string name="pokemon_ability_hidden">(oculta)</string>
     <string name="pokemon_stats">Estadísticas base</string>
+    <string name="pokemon_favorite_add">Marcar como favorito</string>
+    <string name="pokemon_favorite_remove">Quitar de favoritos</string>
     <string name="error_no_connection">Sin conexión. Revisa tu internet.</string>
     <string name="error_timeout">La solicitud tardó demasiado.</string>
     <string name="error_server">Error del servidor (%1$d).</string>

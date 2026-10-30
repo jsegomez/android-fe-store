@@ -11,7 +11,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,11 +48,14 @@ fun PokemonDetailScreen(
     viewModel: PokemonDetailViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
 
     PokemonDetailContent(
         uiState = uiState,
+        isFavorite = isFavorite,
         onRetry = viewModel::load,
         onBack = onBack,
+        onToggleFavorite = viewModel::onToggleFavorite,
         modifier = modifier,
     )
 }
@@ -55,18 +63,43 @@ fun PokemonDetailScreen(
 @Composable
 private fun PokemonDetailContent(
     uiState: PokemonDetailUiState,
+    isFavorite: Boolean,
     onRetry: () -> Unit,
     onBack: () -> Unit,
+    onToggleFavorite: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        BackButton(onClick = onBack, modifier = Modifier.padding(start = 4.dp, top = 8.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp, end = 4.dp, top = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            BackButton(onClick = onBack)
+            if (uiState is PokemonDetailUiState.Success) {
+                FavoriteButton(isFavorite = isFavorite, onClick = onToggleFavorite)
+            }
+        }
 
         when (uiState) {
             PokemonDetailUiState.Loading -> LoadingState()
             is PokemonDetailUiState.Error -> ErrorState(error = uiState.error, onRetry = onRetry)
             is PokemonDetailUiState.Success -> PokemonDetailBody(pokemon = uiState.pokemon)
         }
+    }
+}
+
+@Composable
+private fun FavoriteButton(isFavorite: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    IconButton(onClick = onClick, modifier = modifier) {
+        Icon(
+            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+            contentDescription = stringResource(
+                if (isFavorite) R.string.pokemon_favorite_remove else R.string.pokemon_favorite_add
+            ),
+            tint = MaterialTheme.colorScheme.primary,
+        )
     }
 }
 
