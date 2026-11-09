@@ -76,6 +76,11 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
+    // WorkManager: ejecuta la actualización de la caché aunque la pantalla ya no exista.
+    // DataStore: guarda la fecha del último refresh exitoso.
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.datastore.preferences)
+
     testImplementation(libs.junit)
     // Dispatchers.setMain: permite probar ViewModels (viewModelScope usa el hilo principal) en la JVM
     testImplementation(libs.kotlinx.coroutines.test)
