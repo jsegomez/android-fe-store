@@ -37,6 +37,7 @@ import com.jsegomez.store.core.ui.ErrorState
 import com.jsegomez.store.core.ui.LoadingState
 import com.jsegomez.store.core.ui.RefreshErrorBanner
 import com.jsegomez.store.features.pokedex.domain.model.PokemonSummary
+import com.jsegomez.store.features.pokedex.presentation.sync.SyncPanel
 import com.jsegomez.store.ui.components.BackButton
 import com.jsegomez.store.ui.theme.AppTextStyles
 import org.koin.androidx.compose.koinViewModel
@@ -80,6 +81,10 @@ private fun PokedexContent(
             BackButton(onClick = onBack)
             OnlyFavoritesChip(selected = uiState.onlyFavorites, onClick = onToggleOnlyFavorites)
         }
+
+        // Actualización persistente (WorkManager). Va fuera del `when` de abajo: es independiente
+        // de la lista y debe verse siempre, incluso sin datos o sin conexión.
+        SyncPanel(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
 
         // El ORDEN de las ramas importa: lo guardado va primero, así un error de red
         // nunca esconde una lista que sí tenemos.

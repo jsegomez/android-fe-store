@@ -20,4 +20,15 @@
     <string name="error_timeout">La solicitud tardó demasiado.</string>
     <string name="error_server">Error del servidor (%1$d).</string>
     <string name="error_generic">Algo salió mal. Inténtalo de nuevo.</string>
+    <string name="sync_status">Actualización en segundo plano: %1$s</string>
+    <string name="sync_last_success">Última actualización exitosa: %1$s</string>
+    <string name="sync_never">nunca</string>
+    <string name="sync_action_update">Actualizar en segundo plano</string>
+    <string name="sync_action_cancel">Cancelar</string>
+    <string name="sync_state_idle">sin trabajo activo</string>
+    <string name="sync_state_enqueued">en espera (conexión o reintento)</string>
+    <string name="sync_state_running">en ejecución</string>
+    <string name="sync_state_succeeded">completada</string>
+    <string name="sync_state_failed">falló</string>
+    <string name="sync_state_cancelled">cancelada</string>
 </resources>
