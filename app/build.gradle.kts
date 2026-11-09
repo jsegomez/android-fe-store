@@ -24,8 +24,12 @@ android {
 
     buildTypes {
         release {
+            // Mejora de seguridad 2 (OWASP MASVS-CODE/RESILIENCE): R8 elimina código sin uso y
+            // ofusca nombres. NO convierte un secreto en seguro: solo dificulta la lectura casual.
+            // Las reglas propias van en src/main/keepRules/. Guardar build/outputs/mapping/ de cada
+            // release para poder leer fallos ofuscados.
             optimization {
-                enable = false
+                enable = true
             }
         }
     }

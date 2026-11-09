@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mejora de seguridad 1 (OWASP MASVS-NETWORK): prohíbe el tráfico HTTP sin cifrar.
+     Toda la app habla con PokéAPI por HTTPS. Si alguien cambia una URL a http://, la conexión
+     falla en vez de enviar datos en claro. NO se añade ningún trust-anchor propio ni se acepta
+     ningún certificado extra: la validación normal de certificado y hostname se mantiene. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>
