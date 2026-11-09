@@ -107,6 +107,7 @@ class PokemonDetailDaoTest {
         weightHg = 69,
         typesJson = """["grass","poison"]""",
         abilitiesJson = """[{"name":"overgrow","isHidden":false}]""",
+        lastUpdated = 1_000L,
     )
 
     private fun stats(pokemonId: Int, vararg stats: Pair<String, Int>) =

@@ -10,7 +10,9 @@ import androidx.room.RoomDatabase
 //     pokemon_details  -> ficha completa ya descargada
 //     pokemon_stats    -> estadísticas de cada ficha
 // - version: identifica la ESTRUCTURA de las tablas (no tiene relación con la versión de PokéAPI).
-//   Cada vez que cambie una tabla hay que subirla y escribir una migración.
+//   Cada vez que cambie una tabla hay que subirla y escribir una migración (ver PokedexMigrations.kt).
+//     v1 -> lista, fichas y estadísticas
+//     v2 -> pokemon_details.lastUpdated
 // - exportSchema: guarda un JSON por versión en app/schemas, necesario para probar migraciones.
 @Database(
     entities = [
@@ -18,7 +20,7 @@ import androidx.room.RoomDatabase
         PokemonDetailEntity::class,
         PokemonStatEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 abstract class PokedexDatabase : RoomDatabase() {

@@ -16,7 +16,7 @@ class PokemonDetailLocalMapperTest {
     // Recorrido completo: lo que la API entrega -> filas de Room -> modelo de dominio.
     // Las estadísticas se barajan antes de leer, porque Room no garantiza el orden de las filas.
     private fun roundTrip(dto: PokemonDetailDto) = CachedPokemonDetail(
-        detail = dto.toDetailEntity(),
+        detail = dto.toDetailEntity(lastUpdated = DOWNLOADED_AT),
         pokemon = dto.toSummaryEntity(),
         stats = dto.toStatEntities().reversed(),
     ).toDomain()
@@ -56,6 +56,11 @@ class PokemonDetailLocalMapperTest {
     }
 
     @Test
+    fun detailEntity_storesTheDownloadDateItWasGiven() {
+        assertEquals(DOWNLOADED_AT, bulbasaur().toDetailEntity(lastUpdated = DOWNLOADED_AT).lastUpdated)
+    }
+
+    @Test
     fun summaryEntity_usesTheSameImageUrlAsTheList() {
         val summary = bulbasaur().toSummaryEntity()
 
@@ -88,4 +93,8 @@ class PokemonDetailLocalMapperTest {
     )
 
     private fun named(name: String) = NamedResourceDto(name = name, url = "https://pokeapi.co/api/v2/x/$name/")
+
+    private companion object {
+        const val DOWNLOADED_AT = 1_700_000_000_000L
+    }
 }

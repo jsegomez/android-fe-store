@@ -41,12 +41,14 @@ class PokedexRepositoryImpl(
     // Misma idea que la lista: la red va primero y la escritura solo ocurre si la descarga salió bien.
     // saveDetail guarda resumen, ficha y estadísticas en UNA transacción: nunca queda
     // una ficha a medias, y si algo falla se conserva la anterior.
+    // La fecha se toma DESPUÉS de recibir la respuesta: así solo queda registrada una descarga
+    // que de verdad ocurrió, y un fallo de red nunca "rejuvenece" una ficha antigua.
     override suspend fun refreshPokemonDetail(id: Int): Result<Unit> =
         safeApiCall {
             val dto = api.getPokemonDetail(id.toString())
             detailDao.saveDetail(
                 summary = dto.toSummaryEntity(),
-                detail = dto.toDetailEntity(),
+                detail = dto.toDetailEntity(lastUpdated = System.currentTimeMillis()),
                 stats = dto.toStatEntities(),
             )
         }

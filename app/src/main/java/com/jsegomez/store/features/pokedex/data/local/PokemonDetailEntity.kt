@@ -1,5 +1,6 @@
 package com.jsegomez.store.features.pokedex.data.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -34,4 +35,14 @@ data class PokemonDetailEntity(
     // El formato lo definen los mappers: ver PokemonDetailLocalMapper.kt
     val typesJson: String,
     val abilitiesJson: String,
+    // Cuándo se descargó esta ficha: milisegundos desde 1970 (System.currentTimeMillis()).
+    // Es la fecha del TELÉFONO, no la de modificación en PokéAPI: si el reloj cambia, cambia su lectura.
+    // 0 significa "no se sabe": lo tienen las fichas guardadas antes de la v2, hasta que se vuelvan a descargar.
+    // Vive aquí y no en "pokemon" porque describe a la ficha: refrescar la lista no debe hacer
+    // parecer reciente una ficha antigua.
+    // defaultValue debe coincidir con el DEFAULT del SQL de MIGRATION_1_2; si no, Room rechaza
+    // el esquema migrado. No lleva valor por defecto en Kotlin para que quien cree una ficha
+    // tenga que decidir la fecha, en vez de dejar un 0 por olvido.
+    @ColumnInfo(defaultValue = "0")
+    val lastUpdated: Long,
 )

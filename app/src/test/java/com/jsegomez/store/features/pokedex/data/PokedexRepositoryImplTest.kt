@@ -33,7 +33,8 @@ import java.net.UnknownHostException
 // Que los DAO reales funcionen se prueba aparte, en androidTest.
 class PokedexRepositoryImplTest {
     private val api = FakePokeApi()
-    private val repository = PokedexRepositoryImpl(api, FakePokemonDao(), FakePokemonDetailDao())
+    private val detailDao = FakePokemonDetailDao()
+    private val repository = PokedexRepositoryImpl(api, FakePokemonDao(), detailDao)
 
     // ---------- Lista ----------
 
@@ -97,6 +98,31 @@ class PokedexRepositoryImplTest {
         assertEquals(0.7, detail.heightMeters, 0.0001)
         assertEquals(6.9, detail.weightKg, 0.0001)
         assertEquals(listOf("hp", "attack"), detail.stats.map { it.name })
+    }
+
+    @Test
+    fun refreshPokemonDetail_stampsTheMomentOfTheDownload() = runBlocking {
+        api.detailResponse = bulbasaurDetail()
+
+        val before = System.currentTimeMillis()
+        repository.refreshPokemonDetail(id = 1)
+        val after = System.currentTimeMillis()
+
+        val lastUpdated = detailDao.observe(1).first()!!.detail.lastUpdated
+        assertTrue("lastUpdated debe ser la hora de la descarga", lastUpdated in before..after)
+    }
+
+    @Test
+    fun refreshPokemonDetail_failure_doesNotTouchTheDownloadDateOfTheSavedDetail() = runBlocking {
+        api.detailResponse = bulbasaurDetail()
+        repository.refreshPokemonDetail(id = 1)
+        val firstDownload = detailDao.observe(1).first()!!.detail.lastUpdated
+
+        api.failure = UnknownHostException()
+        repository.refreshPokemonDetail(id = 1)
+
+        // Un intento fallido no puede hacer parecer reciente una ficha antigua
+        assertEquals(firstDownload, detailDao.observe(1).first()!!.detail.lastUpdated)
     }
 
     @Test

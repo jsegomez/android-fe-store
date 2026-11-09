@@ -24,7 +24,9 @@ import kotlinx.serialization.json.Json
 fun PokemonDetailDto.toSummaryEntity(): PokemonEntity =
     PokemonEntity(id = id, name = name, imageUrl = artworkUrl(id))
 
-fun PokemonDetailDto.toDetailEntity(): PokemonDetailEntity =
+// La fecha de descarga se recibe como parámetro (en vez de leer el reloj aquí dentro)
+// para que quien llama decida el momento y la conversión siga siendo predecible.
+fun PokemonDetailDto.toDetailEntity(lastUpdated: Long): PokemonDetailEntity =
     PokemonDetailEntity(
         pokemonId = id,
         heightDm = height,
@@ -33,6 +35,7 @@ fun PokemonDetailDto.toDetailEntity(): PokemonDetailEntity =
         abilitiesJson = Json.encodeToString(
             abilities.map { StoredAbility(name = it.ability.name, isHidden = it.isHidden) }
         ),
+        lastUpdated = lastUpdated,
     )
 
 fun PokemonDetailDto.toStatEntities(): List<PokemonStatEntity> =
