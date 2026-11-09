@@ -1,6 +1,7 @@
 package com.jsegomez.store
 
 import android.app.Application
+import com.jsegomez.store.di.databaseModule
 import com.jsegomez.store.di.networkModule
 import com.jsegomez.store.di.repositoryModule
 import com.jsegomez.store.di.useCaseModule
@@ -13,7 +14,7 @@ class StoreApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@StoreApplication)
-            modules(networkModule, repositoryModule, useCaseModule, viewModelModule)
+            modules(networkModule, databaseModule, repositoryModule, useCaseModule, viewModelModule)
         }
     }
 }
