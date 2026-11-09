@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jsegomez.store.core.network.toAppError
 import com.jsegomez.store.features.pokedex.domain.PokedexRepository
 import com.jsegomez.store.features.pokedex.domain.usecase.ObserveFavoritePokemonUseCase
+import com.jsegomez.store.features.pokedex.domain.usecase.RefreshPokemonListUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,15 +79,11 @@ class PokedexViewModel(
         viewModelScope.launch {
             // Si falla, solo se registra el error: NO se toca state.pokemon, así la lista guardada
             // sigue en pantalla. Si funciona, Room avisa a observePokemon() y la lista se actualiza sola.
-            repository.refreshPokemonList(limit = PAGE_SIZE, offset = 0)
+            repository.refreshPokemonList(limit = RefreshPokemonListUseCase.PAGE_SIZE, offset = 0)
                 .onFailure { e ->
                     _uiState.update { it.copy(refreshError = e.toAppError()) }
                 }
             _uiState.update { it.copy(isRefreshing = false) }
         }
-    }
-
-    private companion object {
-        const val PAGE_SIZE = 20
     }
 }
