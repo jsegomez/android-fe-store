@@ -9,7 +9,8 @@ import com.jsegomez.store.features.products.domain.ProductRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<PokedexRepository> { PokedexRepositoryImpl(get()) }
+    // get() resuelve, en orden, PokeApi (networkModule) y PokemonDao (databaseModule)
+    single<PokedexRepository> { PokedexRepositoryImpl(get(), get()) }
     single<ProductRepository> { InMemoryProductRepository() }
 
     // single: todas las pantallas deben ver la misma lista de favoritos

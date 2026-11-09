@@ -2,6 +2,7 @@
     <string name="app_name">Store</string>
     <string name="pokedex_title">Pokédex</string>
     <string name="action_retry">Reintentar</string>
+    <string name="pokedex_refresh_failed">No se pudo actualizar. Mostrando datos guardados.</string>
     <string name="pokemon_height">Altura</string>
     <string name="pokemon_height_value">%1$.1f m</string>
     <string name="pokemon_weight">Peso</string>
