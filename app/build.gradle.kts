@@ -94,6 +94,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     // MigrationTestHelper: lo usaremos para probar la migración 2 -> 3 con datos reales
     androidTestImplementation(libs.androidx.room.testing)
+    // TestListenableWorkerBuilder (prueba del Worker) y WorkManagerTestInitHelper (prueba del planificador)
+    androidTestImplementation(libs.androidx.work.testing)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
