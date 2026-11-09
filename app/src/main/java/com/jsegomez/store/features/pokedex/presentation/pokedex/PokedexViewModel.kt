@@ -4,20 +4,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jsegomez.store.core.network.toAppError
 import com.jsegomez.store.features.pokedex.domain.PokedexRepository
+import com.jsegomez.store.features.pokedex.domain.usecase.ObserveFavoritePokemonUseCase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PokedexViewModel(
     private val repository: PokedexRepository,
+    private val observeFavoritePokemon: ObserveFavoritePokemonUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PokedexUiState())
     val uiState: StateFlow<PokedexUiState> = _uiState.asStateFlow()
+
+    // Estado del filtro "Solo favoritos". Es la entrada de observePokemon(): al cambiarlo, la
+    // lectura pasa a otra fuente. Se copia también a uiState para que la pantalla pueda mostrarlo.
+    private val onlyFavorites = MutableStateFlow(false)
 
     private var observeJob: Job? = null
 
@@ -34,12 +42,26 @@ class PokedexViewModel(
         refreshPokemon()
     }
 
+    // Activa o desactiva "Solo favoritos". Solo cambia QUÉ se lee de Room: no vuelve a descargar nada,
+    // así que funciona igual sin internet.
+    fun onToggleOnlyFavorites() {
+        val enabled = !onlyFavorites.value
+        onlyFavorites.value = enabled
+        _uiState.update { it.copy(onlyFavorites = enabled) }
+    }
+
     // Se queda escuchando a Room: cada vez que cambia la tabla llega la lista nueva.
     // Es la ÚNICA fuente de la lista que ve la pantalla (la descarga no la asigna directamente).
+    // flatMapLatest: cada vez que cambia el filtro se descarta la lectura anterior y se empieza
+    // a leer la fuente que corresponde (todos los Pokémon o solo los favoritos).
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun observePokemon() {
         observeJob?.cancel()
         observeJob = viewModelScope.launch {
-            repository.observePokemonList()
+            onlyFavorites
+                .flatMapLatest { only ->
+                    if (only) observeFavoritePokemon() else repository.observePokemonList()
+                }
                 .catch { e ->
                     _uiState.update { it.copy(isLoading = false, error = e.toAppError()) }
                 }

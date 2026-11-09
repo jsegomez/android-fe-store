@@ -1,6 +1,6 @@
 package com.jsegomez.store.di
 
-import com.jsegomez.store.features.pokedex.data.InMemoryFavoriteRepository
+import com.jsegomez.store.features.pokedex.data.FavoriteRepositoryImpl
 import com.jsegomez.store.features.pokedex.data.PokedexRepositoryImpl
 import com.jsegomez.store.features.pokedex.domain.FavoriteRepository
 import com.jsegomez.store.features.pokedex.domain.PokedexRepository
@@ -13,6 +13,6 @@ val repositoryModule = module {
     single<PokedexRepository> { PokedexRepositoryImpl(get(), get(), get()) }
     single<ProductRepository> { InMemoryProductRepository() }
 
-    // single: todas las pantallas deben ver la misma lista de favoritos
-    single<FavoriteRepository> { InMemoryFavoriteRepository() }
+    // Favoritos guardados en Room: sobreviven al cierre de la app y a los refresh de PokéAPI
+    single<FavoriteRepository> { FavoriteRepositoryImpl(get()) }
 }

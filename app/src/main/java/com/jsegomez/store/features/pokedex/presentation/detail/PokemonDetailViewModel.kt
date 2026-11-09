@@ -41,8 +41,10 @@ class PokemonDetailViewModel(
         refreshDetail()
     }
 
+    // Escribe en disco, así que va en una corrutina. El corazón se actualiza solo: isFavorite
+    // observa la tabla y emite de nuevo cuando termina la escritura.
     fun onToggleFavorite() {
-        toggleFavorite(pokemonId)
+        viewModelScope.launch { toggleFavorite(pokemonId) }
     }
 
     // Botón "Reintentar". Solo reinicia la lectura local si esa lectura había fallado;

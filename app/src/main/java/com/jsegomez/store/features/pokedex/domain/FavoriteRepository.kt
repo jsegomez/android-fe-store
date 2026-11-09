@@ -1,10 +1,15 @@
 package com.jsegomez.store.features.pokedex.domain
 
-import kotlinx.coroutines.flow.StateFlow
+import com.jsegomez.store.features.pokedex.domain.model.PokemonSummary
+import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {
-    val favoriteIds: StateFlow<Set<Int>>
+    // ¿Este Pokémon es favorito? Emite de nuevo cada vez que cambia
+    fun observeIsFavorite(pokemonId: Int): Flow<Boolean>
 
-    // Si el Pokémon ya es favorito lo desmarca; si no, lo marca
-    fun toggle(pokemonId: Int)
+    // Los Pokémon marcados, en el mismo formato que la lista, para el filtro "Solo favoritos"
+    fun observeFavoritePokemon(): Flow<List<PokemonSummary>>
+
+    // Si el Pokémon ya es favorito lo desmarca; si no, lo marca. Escribe en disco, por eso es suspend.
+    suspend fun toggle(pokemonId: Int)
 }

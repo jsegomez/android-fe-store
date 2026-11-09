@@ -32,6 +32,25 @@ fun LoadingState(modifier: Modifier = Modifier) {
     }
 }
 
+// Pantalla sin contenido que NO es un error ni una carga (por ejemplo, "aún no hay favoritos")
+@Composable
+fun EmptyState(title: String, message: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize().padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(text = title, style = AppTextStyles.BodyLargeSemiBold, textAlign = TextAlign.Center)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = message,
+            style = AppTextStyles.BodyMediumRegular,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
 // Aviso que se muestra ENCIMA del contenido guardado cuando no se pudo actualizar.
 // El contenido sigue visible: el usuario ve qué falló y puede reintentar.
 @Composable

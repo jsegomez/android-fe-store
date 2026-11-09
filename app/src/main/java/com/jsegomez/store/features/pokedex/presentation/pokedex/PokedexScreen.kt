@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,7 +12,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,10 +26,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.jsegomez.store.R
+import com.jsegomez.store.core.ui.EmptyState
 import com.jsegomez.store.core.ui.ErrorState
 import com.jsegomez.store.core.ui.LoadingState
 import com.jsegomez.store.core.ui.RefreshErrorBanner
@@ -44,6 +53,7 @@ fun PokedexScreen(
     PokedexContent(
         uiState = uiState,
         onRetry = viewModel::retry,
+        onToggleOnlyFavorites = viewModel::onToggleOnlyFavorites,
         onBack = onBack,
         onPokemonClick = onPokemonClick,
         modifier = modifier,
@@ -54,12 +64,22 @@ fun PokedexScreen(
 private fun PokedexContent(
     uiState: PokedexUiState,
     onRetry: () -> Unit,
+    onToggleOnlyFavorites: () -> Unit,
     onBack: () -> Unit,
     onPokemonClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        BackButton(onClick = onBack, modifier = Modifier.padding(start = 4.dp, top = 8.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp, end = 16.dp, top = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            BackButton(onClick = onBack)
+            OnlyFavoritesChip(selected = uiState.onlyFavorites, onClick = onToggleOnlyFavorites)
+        }
 
         // El ORDEN de las ramas importa: lo guardado va primero, así un error de red
         // nunca esconde una lista que sí tenemos.
@@ -71,11 +91,35 @@ private fun PokedexContent(
             }
             // Sin datos guardados: o falló leer el disco, o estamos esperando la primera descarga
             uiState.error != null -> ErrorState(error = uiState.error, onRetry = onRetry)
+            // Filtro activo y ningún favorito: es un estado normal, no una carga ni un error.
+            // Va ANTES del spinner para que un refresh en curso no lo tape.
+            uiState.onlyFavorites && !uiState.isLoading -> EmptyState(
+                title = stringResource(R.string.pokedex_no_favorites),
+                message = stringResource(R.string.pokedex_no_favorites_hint),
+            )
             uiState.isLoading || uiState.isRefreshing -> LoadingState()
             // Sin datos y la descarga falló: no hay nada que mostrar, solo explicar y permitir reintentar
             uiState.refreshError != null -> ErrorState(error = uiState.refreshError, onRetry = onRetry)
         }
     }
+}
+
+// Interruptor del filtro. Cambia entre "todos los Pokémon" y "solo los marcados".
+@Composable
+private fun OnlyFavoritesChip(selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    FilterChip(
+        selected = selected,
+        onClick = onClick,
+        label = { Text(text = stringResource(R.string.pokedex_only_favorites)) },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = null,
+                modifier = Modifier.size(FilterChipDefaults.IconSize),
+            )
+        },
+        modifier = modifier,
+    )
 }
 
 @Composable

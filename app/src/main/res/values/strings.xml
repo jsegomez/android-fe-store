@@ -4,6 +4,9 @@
     <string name="action_retry">Reintentar</string>
     <string name="refresh_failed_showing_saved">No se pudo actualizar. Mostrando datos guardados.</string>
     <string name="pokemon_detail_not_downloaded">Detalle no descargado</string>
+    <string name="pokedex_only_favorites">Solo favoritos</string>
+    <string name="pokedex_no_favorites">Aún no tienes favoritos</string>
+    <string name="pokedex_no_favorites_hint">Abre un Pokémon y toca el corazón para marcarlo.</string>
     <string name="pokemon_height">Altura</string>
     <string name="pokemon_height_value">%1$.1f m</string>
     <string name="pokemon_weight">Peso</string>

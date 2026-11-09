@@ -1,5 +1,6 @@
 package com.jsegomez.store.di
 
+import com.jsegomez.store.features.pokedex.domain.usecase.ObserveFavoritePokemonUseCase
 import com.jsegomez.store.features.pokedex.domain.usecase.ObserveIsFavoriteUseCase
 import com.jsegomez.store.features.pokedex.domain.usecase.ToggleFavoriteUseCase
 import org.koin.core.module.dsl.factoryOf
@@ -9,4 +10,5 @@ import org.koin.dsl.module
 val useCaseModule = module {
     factoryOf(::ToggleFavoriteUseCase)
     factoryOf(::ObserveIsFavoriteUseCase)
+    factoryOf(::ObserveFavoritePokemonUseCase)
 }

@@ -16,4 +16,7 @@ data class PokedexUiState(
     val refreshError: AppError? = null,
     // Falló la lectura del almacenamiento local (poco frecuente)
     val error: AppError? = null,
+    // true = el filtro "Solo favoritos" está activo y `pokemon` contiene solo los marcados.
+    // Vacío con el filtro activo significa "ningún favorito", no "la lista no se ha descargado".
+    val onlyFavorites: Boolean = false,
 )
