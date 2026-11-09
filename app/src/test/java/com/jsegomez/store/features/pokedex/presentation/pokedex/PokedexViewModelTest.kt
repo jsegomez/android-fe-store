@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -113,6 +114,8 @@ private class FakePokedexRepository : PokedexRepository {
 
     override suspend fun refreshPokemonList(limit: Int, offset: Int): Result<Unit> = refreshResult
 
-    override suspend fun getPokemonDetail(id: Int): Result<PokemonDetail> =
-        error("El detalle no se usa en estas pruebas")
+    // El detalle no se usa en estas pruebas
+    override fun observePokemonDetail(id: Int): Flow<PokemonDetail?> = emptyFlow()
+
+    override suspend fun refreshPokemonDetail(id: Int): Result<Unit> = Result.success(Unit)
 }

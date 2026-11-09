@@ -2,7 +2,7 @@ package com.jsegomez.store.features.pokedex.presentation.pokedex
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jsegomez.store.core.network.AppError
+import com.jsegomez.store.core.network.toAppError
 import com.jsegomez.store.features.pokedex.domain.PokedexRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,8 +63,6 @@ class PokedexViewModel(
             _uiState.update { it.copy(isRefreshing = false) }
         }
     }
-
-    private fun Throwable.toAppError(): AppError = this as? AppError ?: AppError.Unknown(this)
 
     private companion object {
         const val PAGE_SIZE = 20

@@ -3,6 +3,7 @@ package com.jsegomez.store.features.pokedex.presentation.detail
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -26,12 +28,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.jsegomez.store.R
+import com.jsegomez.store.core.network.AppError
 import com.jsegomez.store.core.ui.ErrorState
 import com.jsegomez.store.core.ui.LoadingState
+import com.jsegomez.store.core.ui.RefreshErrorBanner
+import com.jsegomez.store.core.ui.toMessage
 import com.jsegomez.store.features.pokedex.domain.model.PokemonDetail
 import com.jsegomez.store.features.pokedex.domain.model.PokemonStat
 import com.jsegomez.store.ui.components.BackButton
@@ -53,7 +59,7 @@ fun PokemonDetailScreen(
     PokemonDetailContent(
         uiState = uiState,
         isFavorite = isFavorite,
-        onRetry = viewModel::load,
+        onRetry = viewModel::retry,
         onBack = onBack,
         onToggleFavorite = viewModel::onToggleFavorite,
         modifier = modifier,
@@ -77,16 +83,49 @@ private fun PokemonDetailContent(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             BackButton(onClick = onBack)
-            if (uiState is PokemonDetailUiState.Success) {
+            if (uiState.pokemon != null) {
                 FavoriteButton(isFavorite = isFavorite, onClick = onToggleFavorite)
             }
         }
 
-        when (uiState) {
-            PokemonDetailUiState.Loading -> LoadingState()
-            is PokemonDetailUiState.Error -> ErrorState(error = uiState.error, onRetry = onRetry)
-            is PokemonDetailUiState.Success -> PokemonDetailBody(pokemon = uiState.pokemon)
+        // El ORDEN de las ramas importa: la ficha guardada va primero, así un error de red
+        // nunca esconde una ficha que sí tenemos.
+        when {
+            uiState.pokemon != null -> {
+                if (uiState.isRefreshing) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                uiState.refreshError?.let { RefreshErrorBanner(error = it, onRetry = onRetry) }
+                PokemonDetailBody(pokemon = uiState.pokemon)
+            }
+            // Sin ficha guardada: o falló leer el disco, o estamos esperando la primera descarga
+            uiState.error != null -> ErrorState(error = uiState.error, onRetry = onRetry)
+            uiState.isLoading || uiState.isRefreshing -> LoadingState()
+            // Sin ficha y la descarga falló: esta ficha nunca se ha guardado (no es un error de dibujo)
+            uiState.refreshError != null -> DetailNotDownloaded(error = uiState.refreshError, onRetry = onRetry)
         }
+    }
+}
+
+@Composable
+private fun DetailNotDownloaded(error: AppError, onRetry: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize().padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = stringResource(R.string.pokemon_detail_not_downloaded),
+            style = AppTextStyles.BodyLargeSemiBold,
+            textAlign = TextAlign.Center,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = error.toMessage(),
+            style = AppTextStyles.BodyMediumRegular,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onRetry) { Text(text = stringResource(R.string.action_retry)) }
     }
 }
 

@@ -2,8 +2,12 @@ package com.jsegomez.store.features.pokedex.data
 
 import com.jsegomez.store.core.network.safeApiCall
 import com.jsegomez.store.features.pokedex.data.local.PokemonDao
+import com.jsegomez.store.features.pokedex.data.local.PokemonDetailDao
+import com.jsegomez.store.features.pokedex.data.mapper.toDetailEntity
 import com.jsegomez.store.features.pokedex.data.mapper.toDomain
 import com.jsegomez.store.features.pokedex.data.mapper.toEntity
+import com.jsegomez.store.features.pokedex.data.mapper.toStatEntities
+import com.jsegomez.store.features.pokedex.data.mapper.toSummaryEntity
 import com.jsegomez.store.features.pokedex.data.remote.PokeApi
 import com.jsegomez.store.features.pokedex.domain.PokedexRepository
 import com.jsegomez.store.features.pokedex.domain.model.PokemonDetail
@@ -14,9 +18,10 @@ import kotlinx.coroutines.flow.map
 class PokedexRepositoryImpl(
     private val api: PokeApi,
     private val pokemonDao: PokemonDao,
+    private val detailDao: PokemonDetailDao,
 ) : PokedexRepository {
 
-    // La lista que ve el usuario sale SIEMPRE de Room, haya internet o no.
+    // Lo que ve el usuario sale SIEMPRE de Room, haya internet o no.
     override fun observePokemonList(): Flow<List<PokemonSummary>> =
         pokemonDao.observeAll().map { rows -> rows.map { it.toDomain() } }
 
@@ -30,7 +35,19 @@ class PokedexRepositoryImpl(
             pokemonDao.upsertAll(summaries.map { it.toEntity() })
         }
 
-    override suspend fun getPokemonDetail(id: Int): Result<PokemonDetail> =
-        safeApiCall { api.getPokemonDetail(id.toString()) }
-            .map { it.toDomain() }
+    override fun observePokemonDetail(id: Int): Flow<PokemonDetail?> =
+        detailDao.observe(id).map { cached -> cached?.toDomain() }
+
+    // Misma idea que la lista: la red va primero y la escritura solo ocurre si la descarga salió bien.
+    // saveDetail guarda resumen, ficha y estadísticas en UNA transacción: nunca queda
+    // una ficha a medias, y si algo falla se conserva la anterior.
+    override suspend fun refreshPokemonDetail(id: Int): Result<Unit> =
+        safeApiCall {
+            val dto = api.getPokemonDetail(id.toString())
+            detailDao.saveDetail(
+                summary = dto.toSummaryEntity(),
+                detail = dto.toDetailEntity(),
+                stats = dto.toStatEntities(),
+            )
+        }
 }

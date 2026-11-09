@@ -15,4 +15,5 @@ val databaseModule = module {
 
     // Los DAO se obtienen de la base; así los repositorios reciben solo el DAO que necesitan.
     single { get<PokedexDatabase>().pokemonDao() }
+    single { get<PokedexDatabase>().detailDao() }
 }
