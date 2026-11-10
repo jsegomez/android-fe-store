@@ -1,0 +1,133 @@
+Terminé el paso 9: creé EXPLICACION_TAREA_SESION_10.md y lo enlacé desde README.md. El código de la tarea está completo, pero quedan tres pruebas manuales que solo tú puedes hacer. No hice commit.
+
+Qué contiene EXPLICACION_TAREA_SESION_10.md
+
+Sigue el formato del documento de la sesión 9.
+
+- Arquitectura del sync: diagrama, tabla de capas y la tabla de decisión de reintentos, con el máximo de 4 intentos.
+- Criterios de la tarea: cada uno con su archivo y el test que lo comprueba.
+- Inventario de datos.
+- Las dos mejoras de seguridad: formato riesgo, corrección, evidencia y prueba posterior.
+- Checklist de seguridad: cumple, pendiente o no aplica, con justificación en cada fila.
+- Comandos de las pruebas.
+- Guion del video.
+- Límites conocidos.
+
+En el README.md solo añadí un enlace a los documentos de las dos sesiones y el syncModule en la lista de módulos de Koin.
+
+Lo que quedó como pendiente
+
+Marqué estas tres cosas como pendientes, sin presentarlas como verificadas:
+
+1. Mejora 1, prueba posterior: cambia la URL base a http://, comprueba que la petición falla por cleartext en Logcat y devuélvela a https://.
+2. Mejora 2, prueba posterior: con el release instalado, inicia sesión, abre la Pokédex y pulsa "Actualizar en segundo plano". Hasta ahora solo comprobé que arranca hasta el login.
+3. Backups y borrado de la caché: son hallazgos honestos del checklist. allowBackup="true" tiene las reglas en blanco. Son datos no sensibles, pero conviene decidir qué respaldar.
+
+Cuando hagas las pruebas 1 y 2, cambia "Pendiente de ejecutar a mano" por el resultado en esas filas. Si lo prefieres, resuelvo el hallazgo de backups con una regla explícita.
+
+Dos ajustes que puedes revisar:
+- Marqué "sesión (401/403)" como no aplica porque la feature auth es solo un esqueleto vacío.
+- Ante la regla de "sin tokens", la restricción de "dos mejoras verificadas" depende de que hagas esas dos pruebas.
+
+Lo que falta para entregar
+
+1. Hacer las dos pruebas manuales de arriba.
+2. Grabar el video (guion en la sección "Recorrido del video"). El retry solo se ve en el Background Task Inspector, porque no hay botón de simulación de fallo.
+3. Revisar y hacer commit de los cambios.
+
+No hice commit de nada de esto, porque no lo pediste.
+
+✻ Crunched for 1m 3s · done 10:35 AM
+
+❯ /exit
+
+※ recap: La meta es entregar la tarea 10: actualización de la Pokédex con WorkManager y revo, las pruebas y el documento están listos; lo siguiente es probar a mano el release y elbloqueo de HTTP, y luego grabar el video. (disable recaps in /config)
+
+❯ realmente no se como hacer los pasos 1 y 2
+1 skill available
+
+  Read 1 file, ran 2 shell commands
+
+Asumo que te refieres a las dos pruebas manuales pendientes, la de HTTP (mejora 1) y la dlico cada una paso a paso.
+
+Antes, una corrección mía. En el paso 7 dije que no podía llegar a la Pokédex porque necelogin es de mentira. Sirve cualquier email con formato válido y una contraseña de 6 o máscaracteres, por ejemplo test@test.com y 123456.
+
+Prueba 1: HTTP bloqueado (mejora 1)
+
+El objetivo es comprobar que la app se niega a hablar por HTTP sin cifrar.
+
+1. Abre di/NetworkModule.kt, línea 20. Cambia "https://pokeapi.co/api/v2/" por "http://pokeapi.co/api/v2/". Es un cambio temporal.
+2. Ejecuta la app en debug con el botón verde ▶ de Android Studio.
+3. Abre Logcat (pestaña inferior) y escribe cleartext en el filtro.
+4. Inicia sesión con test@test.com y 123456, y entra a la Pokédex.
+5. En Logcat debe aparecer un error como Cleartext HTTP traffic to pokeapi.co not permitted. En pantalla verás el aviso de "No se pudo actualizar".
+6. Haz una captura de pantalla y copia esa línea de Logcat. Esa es tu evidencia.
+7. Deshaz el cambio de la línea 20 (vuelve a https). Puedes usar Ctrl+Z o git restore app/src/main/java/com/jsegomez/store/di/NetworkModule.kt.
+
+Prueba 2: el release ofuscado funciona (mejora 2)
+
+El objetivo es comprobar que R8 no rompió Retrofit, la serialización ni el worker.
+
+El release sale sin firma y Android Studio no puede instalarlo, así que hay un paso extra:
+
+1. En app/build.gradle.kts, dentro de release { ... }, añade temporalmente esta línea: signingConfig = signingConfigs.getByName("debug"). Luego haz Sync.
+2. Abre Build Variants (menú View → Tool Windows → Build Variants) y cambia app de debug
+3. Ejecuta con ▶. Inicia sesión como arriba y entra a la Pokédex.
+4. Comprueba tres cosas:
+   - La lista carga y se ven las imágenes.
+   - "Actualizar en segundo plano" pasa por "en ejecución" y termina en "completada" con
+   - Logcat no muestra FATAL EXCEPTION.
+5. Deshaz los cambios: quita la línea de signingConfig, vuelve a la variante debug y haz
+
+Si algo falla en el release, copia el error de Logcat y me lo pasas. Se lee con app/building.txt.
+
+¿Quieres que lo haga yo?
+
+La prueba 2 no necesita tocar tu código: puedo instalar el release firmado en el emulador Tendrías que repetirla tú solo para la captura del video. La prueba 1 sí exige editarNetworkModule.kt, así que la haces tú.
+
+¿Corro yo la prueba 2, o prefieres hacer las dos?
+
+✻ Worked for 31s · done 10:46 PM
+
+❯ pero la prueba 2, como grabo el vide, la pantalla puedo grabar, el problema que no se que cosas hacer para ejecutar el fallo
+
+Para grabar la pantalla alcanza con la grabadora del emulador o del teléfono. Lo que te falta es qué provocar en cada escena. Dos de las tres pruebas que pide la tarea (sin red y recreación) no requieren ningún truco. La del retry sí.
+
+Guion (2–3 minutos)
+
+Escena 1: sin red
+1. Abre la Pokédex con la lista cargada.
+2. Activa el modo avión (desliza el panel de ajustes rápidos).
+3. Pulsa "Actualizar en segundo plano". El panel dice "en espera" y la lista sigue visible. Dilo en voz alta: "los datos anteriores siguen disponibles".                                                     4. Desactiva el modo avión. Pasa a "en ejecución" y luego a "completada", con la fecha nu
+                                                                                                                                                                                                             Escena 2: recreación
+1. Con el modo avión activo, pulsa "Actualizar" (queda "en espera").                                                                                                                                         2. Manda la app al fondo y, en la terminal de Android Studio, ejecuta adb shell am kill c
+3. Vuelve a abrir la app desde las apps recientes. El panel sigue en "en espera". Eso demuestra que el estado vive en WorkManager y no en la pantalla.                                                       4. Apaga el modo avión y muestra que termina en "completada".
+                                                                                                                                                                                                             Escena 3: cancelar
+Con el modo avión activo, pulsa "Actualizar" y luego "Cancelar". Debe decir "cancelada", no "completada".                                                                                                    
+La escena del retry (la difícil)                                                                                                                                                                             
+El modo avión solo muestra que el trabajo espera por falta de red, no que reintente. Para ver un reintento hace falta que haya red pero la petición falle. Mi propuesta es forzarlo con una URL mala:        
+1. En NetworkModule.kt, línea 20, cambia temporalmente la URL a "https://pokeapi-no-existe.co/api/v2/" y ejecuta la app (debug, ▶).                                                                          2. Abre Logcat y filtra por WM-WorkerWrapper.
+3. Con internet encendido, pulsa "Actualizar en segundo plano".                                                                                                                                              4. Cada intento fallido deja una línea tipo Worker result RETRY for Work [...]. Después dker result FAILURE y el panel dice "falló".
+5. Muestra que la lista guardada sigue en pantalla.                                                                                                                                                          6. Revierte la URL a la correcta.
+                                                                                                                                                                                                             Los intentos se espacian 30 s, 60 s y 120 s, así que el ciclo completo dura unos 3,5 minur la espera, o decir "aquí pasan 30 s" y mostrar solo el primer RETRY y el FAILURE final.Si quieres ver el contador de intentos, el Background Task Inspector (menú View → Tool Windows) lo muestra.                                                                                                  
+Alternativa: un botón de simulación                                                                                                                                                                          
+El material de clase usa un botón de simulación que solo existe en debug y falla una vez. Con eso no tendrías que tocar la URL ni esperar tanto. Es una pieza extra de código, así que no la hice sin que lo pidieras. Si la quieres, dime y la implemento, o te guío para que la escribas tú.
+
+¿Prefieres probar con la URL mala o agrego el botón de simulación?
+
+✻ Cogitated for 20s · done 10:49 PM
+
+❯ que es mas sencillo
+
+La URL mala es más sencilla. Es cambiar una línea y revertirla, sin código nuevo y sin rin la app. Lo único incómodo es esperar unos 3,5 minutos, y eso lo resuelves cortando laespera al editar el video.
+
+Hazlo así:
+
+1. Cambia la línea 20 de NetworkModule.kt a "https://pokeapi-no-existe.co/api/v2/" y ejecuta la app.
+2. Abre Logcat y filtra por WM-WorkerWrapper.
+3. Empieza a grabar y pulsa "Actualizar en segundo plano" con internet encendido.
+4. Muestra la primera línea RETRY en Logcat y que el panel dice "en espera".
+5. Corta la espera y muestra el FAILURE final con el panel en "falló" y la lista todavía visible.
+6. Revierte la URL a https://pokeapi.co/api/v2/ cuando termines.
+
+El botón de simulación solo conviene si quieres grabar el retry en vivo sin cortes. Para ta.
