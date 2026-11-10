@@ -2,13 +2,16 @@
 
 App Android con Jetpack Compose que muestra una Pokédex (listado y detalle) usando PokéAPI. Las dependencias se inyectan con Koin. En el detalle se puede marcar un Pokémon como favorito.
 
+Documentación de las tareas: [Sesión 9 (favoritos sin conexión)](EXPLICACION_TAREA_SESION_09.md) y [Sesión 10 (WorkManager y seguridad)](EXPLICACION_TAREA_SESION_10.md).
+
 ## Módulos de Koin
 
 Están en la carpeta `di/`, uno por capa:
 
 - `networkModule`: Json, OkHttp, Retrofit y `PokeApi`.
 - `repositoryModule`: los repositorios (Pokédex, productos y favoritos).
-- `useCaseModule`: los casos de uso de favoritos.
+- `useCaseModule`: los casos de uso (favoritos y actualización de la lista).
+- `syncModule`: la actualización en segundo plano (fábrica del Worker, DataStore y planificador).
 - `viewModelModule`: los ViewModels.
 
 Todos se cargan en `StoreApplication`.
